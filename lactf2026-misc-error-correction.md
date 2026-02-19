@@ -30,3 +30,12 @@ To continue, we must find out what masking is the QR code using. I looked at the
 To find out which version of masking we are using, we can use the **Format information** in the QR code. You can find it at the top left Finder chunk. ( The Top Right and Bottom Left Finders each contain half of the Format information as a form of redundancy, in cae the QR code is damaged ).&#x20;
 
 <figure><img src=".gitbook/assets/block_24.png" alt=""><figcaption></figcaption></figure>
+
+The Format information itself is masked. To unmask it,we must unmask it by XORing it with `101010000010010` . (Unlike the data, the Format information always uses the same mask.)
+
+```
+Masked bits:  111 0111 1001 0001
+XOR mask:     101 0100 0001 0010
+Reuslt:       010 0011 1000 0011
+```
+
