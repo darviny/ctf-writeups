@@ -39,3 +39,32 @@ XOR mask:     101 0100 0001 0010
 Reuslt:       010 0011 1000 0011
 ```
 
+To read the result,
+
+```
+Error Correction (2 bits) : 01
+Mask Pattern (3 bits): 000
+BCH Error-Correction (10 bits) : 11 1000 0011
+```
+
+So now we know we are using Mask 0 which is
+
+> &#x20;$$(i+j)(mod2)==0$$&#x20;
+
+which means if the sum of x and y coordinates is divisible by 2 then XOR with 1.
+
+Using LLM, I wrote a script that can unmask a chunk of the QR code, provided we know we know exactly the coordinates of its bits. Using that script, I unmasked the chunk at the bottom right ( where QR code begins).
+
+<figure><img src=".gitbook/assets/unmasked_block_19.png" alt=""><figcaption></figcaption></figure>
+
+In the unmasked chunk, we start from the bottom right bit, then its left, then diagonally top right, then left, and repeat. In our case, the first byte is `0100 0100` , followed by `0111 0101`. The first four bits is our mode bits. (`0100` is byte mode which matches our script, feel free to consult the internet for other mode codes). And the next eight bits are the length bits which is `0100 0111`  or 71 in decimal. So now we know the flag has a length of 71. Then we try to read the first char of our flag which we know is 'l' which is `01101100` (or `01001100` for uppercase). However, our next four bits are `0101` , which means something is wrong!
+
+After consulting with teammates, LLM and the Internet. I realized the raw bytes in QR code are not sequential but actually interleveled. Meaning when you read the bytes, they alternative into two sets.&#x20;
+
+In our case, it means it means after first byte `0100 0100`, it is not followed by the second byte `0111 0101` but rather the third byte, we only know partialy, `11xx xxxx`. That also means the chunk above the bottom right must have `xx01 10xx xxxx xx11 0001 10xx` you read from the botton right zig zag up.&#x20;
+
+Once we found the matching chunk. We now know the correct length of our flag is `0100 1111`  which is 79.
+
+We use the QR generation script, using a dummy flag with the same length, commenting out the shuffle line, we generate variants of the QR code. And there notice that in every chunk, there are parts that look similar to our sliced up chunks. That is because because our data is only 79 chars, there are many padding bits that would look the same independent of the actual value of the data.
+
+With this pattern method, we are left with only 7 unidentified pieces, which we brute forced easily.
