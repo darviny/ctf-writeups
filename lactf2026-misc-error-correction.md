@@ -19,7 +19,7 @@ description: by pstorm
 
 First thing I did was throwing the shuffled QR code and the python script into LLM (Gemini 3 Pro) to get a high level overview. &#x20;
 
-```
+```python
 qr = segno.make(flag, mode='byte', error='L', boost_error=False, version=7) 
 qr.save("temp.txt", border=0) 
 with open("temp.txt", 'r') as file: 
