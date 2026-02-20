@@ -1,5 +1,5 @@
 ---
-description: Learning how to read QR codes by eyes
+description: by pstorm
 ---
 
 # \[lactf2026] misc/error-correction
