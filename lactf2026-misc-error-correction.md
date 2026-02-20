@@ -4,22 +4,34 @@ description: by pstorm
 
 # \[lactf2026] misc/error-correction
 
-> #### **Flag Objective:**
->
-> Reconstruct a shuffled QR code.
->
 > #### **Description:**&#x20;
 >
 > Looks like their error correction's no match for my error creation!
 >
-> #### <sup>**Files:**</sup>
+> #### **Files:**
 >
 > * [chall.png](https://github.com/uclaacm/lactf-archive/blob/main/2026/misc/error-correction/chall.png)
 > * [chall.py](https://github.com/uclaacm/lactf-archive/blob/main/2026/misc/error-correction/chall.py)
 >
 > [<sub>https://github.com/uclaacm/lactf-archive/tree/main/2026/misc/error-correction</sub>](https://github.com/uclaacm/lactf-archive/tree/main/2026/misc/error-correction)
 
-First thing I did was throwing the shuffled QR code and the python [script](https://github.com/uclaacm/lactf-archive/blob/main/2026/misc/error-correction/chall.py) into LLM to get freebies without spiking my cortisol. From the script, the LLM  identified this is a gen 7 QR code that has been divided into 5x5 pieces and scrambled. And to solve the challenge, we just need to put the 25 pieces back into order.
+## Recon:
+
+First thing I did was throwing the shuffled QR code and the python script into LLM (Gemini 3 Pro) to get a high level overview. &#x20;
+
+```
+qr = segno.make(flag, mode='byte', error='L', boost_error=False, version=7) 
+qr.save("temp.txt", border=0) 
+with open("temp.txt", 'r') as file: 
+    code = file.read()
+code = [255-(int(l)255) for l in code if l in ("0","1")] 
+chunks = [c for chunk in [[[code[405y+45ysub+9x:405y+45ysub+9*(x+1)] for ysub in range(9)] for x in range(5)] for y in range(5)] for c in chunk] 
+random.shuffle(chunks)
+```
+
+Through this line, the QR code is identified as a version 7 QR code that has been divided into 5x5 pieces and shuffled. It is further verified by the 3 Finder and Alignment patterns in the challenge image.
+
+<figure><img src=".gitbook/assets/chall_1 (1).png" alt=""><figcaption></figcaption></figure>
 
 <figure><img src=".gitbook/assets/output-onlinepngtools.png" alt=""><figcaption></figcaption></figure>
 
