@@ -4,8 +4,8 @@ description: Learning how to read QR codes by eyes
 
 # \[lactf2026] misc/error-correction
 
-Flag Objective: Reconstruct a shuffled QR code.
-
+> **Flag Objective: Reconstruct a shuffled QR code.**
+>
 > Looks like their error correction's no match for my error creation!
 >
 > * [chall.png](https://github.com/uclaacm/lactf-archive/blob/main/2026/misc/error-correction/chall.png)
