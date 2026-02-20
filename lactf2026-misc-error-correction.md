@@ -15,9 +15,9 @@ description: by pstorm
 >
 > [<sub>https://github.com/uclaacm/lactf-archive/tree/main/2026/misc/error-correction</sub>](https://github.com/uclaacm/lactf-archive/tree/main/2026/misc/error-correction)
 
-## Recon:
+## Recon
 
-First thing I did was throwing the shuffled QR code and the python script into LLM (Gemini 3 Pro) to get a high level overview. &#x20;
+First thing I did was throwing the shuffled QR code and the python script into LLM (Gemini 3 Pro) to get a high level overview. Looking at these lines in the script,
 
 ```python
 qr = segno.make(flag, mode='byte', error='L', boost_error=False, version=7) 
@@ -29,13 +29,29 @@ chunks = [c for chunk in [[[code[405y+45ysub+9x:405y+45ysub+9*(x+1)] for ysub in
 random.shuffle(chunks)
 ```
 
-Through this line, the QR code is identified as a version 7 QR code that has been divided into 5x5 pieces and shuffled. It is further verified by the 3 Finder and Alignment patterns in the challenge image.
+It seems a version 7 QR code is generated from a flag, and it is divided into 5x5 chunks, with each piece containing 45 bits, and the chunks are shuffled.&#x20;
 
-<figure><img src=".gitbook/assets/chall_1 (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/chall_1 (1).png" alt=""><figcaption><p>Finders and Alignment patterns</p></figcaption></figure>
+
+Looking at the chall.png, we can see the 3 **Finder** and **Alignment** patterns. So now we just need to unshuffle and reconstruct the QR code.
+
+## Phase 1
 
 <figure><img src=".gitbook/assets/output-onlinepngtools.png" alt=""><figcaption></figcaption></figure>
 
-To do that, I (with the help of LLM) wrote a script to slice 25 chunks with equal size. And reverse engineer the QR skeleton such its Finders, Alignment and Timing pieces. Finders are the chunks with the big squares, Alignment are the chunks with smaller squares, Timing are the chunks with the dotting lines. The Finder and Alignment pieces are relatively easy to find as each chunk has a distinctive square position. (e.g. The middle alignment  has a small square in the middle of the chunk, the bottom alignment has a small square at the top of the chunk, etc). With the help of  Version Information bits, the Timing pieces are also identified. These are 13 out of 25 pieces solved.
+First thing to do is to slice the shuffled QR code into 25 chunks with equal size. And like putting a jigsaw puzzle back together, we start from the most obvious chunks – **Finders**, **Alignment** and **Timing**.&#x20;
+
+**Finders** are the chunks with the big squares, there are three of them –  at top left, top right and bottom left.
+
+**Alignment** are the chunks with smaller squares, there are six of them – at center, top, left, right, bottom and bottom right.
+
+**Timing** are the chunks with dotting lines, there are four of them. Two veritical and two horizontal. The right horizontal and bottom vertical chunks have an identifiable **Version Information** pattern.
+
+<figure><img src=".gitbook/assets/chall_topright_chunk-mh.png" alt=""><figcaption><p>Notice the Timing pattern below the Version Information pattern.</p></figcaption></figure>
+
+With relatively ease, we have the skeleton of the QR code (13 out of 25 chunks) solved!
+
+## Phase 2
 
 To continue, we must find out what masking is the QR code using. I looked at the script, hoping I would find that information. Unfortunately, the masking mode parameter is not specificied. Instead, we rely on `segno` to automatically choose the best masking.
 
