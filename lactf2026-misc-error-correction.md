@@ -108,18 +108,22 @@ To read the data on a QR code, we start reading it from the bottom right bit. Th
 * **Mode Bits**: The first four bits are. `0100` is for **byte mode** which matches `mode='byte'` in the python script.
 * **Length Bits:** The eight bits after the Mode Bits. It is the length of our data in binaries. `0100 0111` means the length of our data is 71 bits.
 
-Following the **Mode Bits** and **Length Bits** are the data bits or codewords in our QR code. In our case, it should be a string starting with `lactf{`, so the next eight bits should be 'l' in binaries or `01101100`. However, our next four bits are `0101` instead, which means something is wrong!
+Following the **Mode Bits** and **Length Bits** are the data bits in our QR code. In our case, it should be a string starting with `lactf{`, so the next eight bits should be 'l' in binaries or `01101100`. However, our next four bits are `0101` instead, which means something is wrong!
 
-After some discussions on Discord, I realized the codewords in our **QR code are not sequential but actually interleveled**. Meaning when you read the bytes, they alternative into two sets.
+After some discussions on Discord, I realized the bits in our **QR code are not sequential but actually interleveled**. Meaning when you read the bytes or codewords as they are called, they alternative into two sets.
 
-<figure><img src=".gitbook/assets/QR_Ver3_Codeword_Ordering.svg.jpg" alt=""><figcaption><p>Example of how interleveling works. Note this is version 3, not version 7.</p></figcaption></figure>
+<figure><img src=".gitbook/assets/unmasked_block_19 big 2-mh.png" alt=""><figcaption><p>Codewords alternate into two sets.</p></figcaption></figure>
+
+In our case, it means after first codeword `0100 0100`, it is not followed by the second codeword `0111 0101`, but rather the third codeword, which we only know start with `11`. This means the length bits are `0100 11xx`. Which means we are uncertain what our length is anymore, however, one thing that is certain is that the data bits start with 'l' or `0110 1100`. That also means the chunk above the starting chunk must match the pattern `xx0110 xxxxxxxx 1100`.
+
+<figure><img src=".gitbook/assets/unmasked_darvin_chall copy-mh.png" alt=""><figcaption><p>The codewords in Set 1 (Yellow) give us the correct length and character 'l'.</p></figcaption></figure>
+
+Now that we  know the correct length is 79. We can use the QR generation script, using a dummy flag with the same length, to generate variants of the QR code (without shuffling the chunks of course).
+
+And notice that in every chunk, there are parts that consistently look similar.
 
 
 
-In our case, it means it means after first byte `0100 0100`, it is not followed by the second byte `0111 0101` but rather the third byte, we only know partialy, `11xx xxxx`. That also means the chunk above the bottom right must have `xx01 10xx xxxx xx11 0001 10xx` you read from the botton right zig zag up.&#x20;
-
-Once we found the matching chunk. We now know the correct length of our flag is `0100 1111`  which is 79.
-
-We use the QR generation script, using a dummy flag with the same length, commenting out the shuffle line, we generate variants of the QR code. And there notice that in every chunk, there are parts that look similar to our sliced up chunks. That is because because our data is only 79 chars, there are many padding bits that would look the same independent of the actual value of the data.
+&#x20;to our sliced up chunks. That is because because our data is only 79 chars, there are many padding bits that would look the same independent of the actual value of the data.
 
 With this pattern method, we are left with only 7 unidentified pieces, which we brute forced easily.
