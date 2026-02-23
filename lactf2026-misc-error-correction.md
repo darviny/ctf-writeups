@@ -57,31 +57,31 @@ So our job is to unshuffle the chunks and reconstruct the QR code like a jigsaw 
 
 <figure><img src=".gitbook/assets/chall_topright_chunk-mh.png" alt=""><figcaption><p>Notice the Timing pattern below the Version Information pattern.</p></figcaption></figure>
 
-With relatively ease, we have the skeleton of the QR code (13 out of 25 chunks) solved!
+And we have 13 out of 25 chunks solved!
 
-## Phase 2
+## Solve (Phase 2)
 
-To continue, we must find out what masking is the QR code using. I looked at the script, hoping I would find that information. Unfortunately, the masking mode parameter is not specificied. Instead, we rely on `segno` to automatically choose the best masking.
+To continue, we must find out what masking is the QR code using. I looked at the script, hoping I would find that information. Unfortunately, the masking mode parameter is not specificied. Instead, we rely on `segno` to automatically choose the most optimal masking.
 
 `qr = segno.make(flag, mode='byte', error='L', boost_error=False, version=7)`
 
-#### What is Masking?
+### What is Masking?
 
 > To avoid big blobs of white/black area, we run the raw QR code through one of the eight masking pattern to make sure we have a machine readable QR code.
 
 To find out which version of masking we are using, we can use the **Format information** in the QR code. You can find it at the top left Finder chunk. ( The Top Right and Bottom Left Finders each contain half of the Format information as a form of redundancy, in cae the QR code is damaged ).&#x20;
 
-<figure><img src=".gitbook/assets/block_24.png" alt=""><figcaption></figcaption></figure>
+The Format information itself is masked. To unmask it,we must unmask it by XORing it with `101010000010010` to unmask it. (Unlike the data, the Format information always uses the same mask.)
 
-The Format information itself is masked. To unmask it,we must unmask it by XORing it with `101010000010010` . (Unlike the data, the Format information always uses the same mask.)
+<figure><img src=".gitbook/assets/block_24-mh.png" alt=""><figcaption><p>Format bits are highlighted here.</p></figcaption></figure>
 
 ```
-Masked bits:  111 0111 1001 0001
+Format bits:  111 0111 1001 0001
 XOR mask:     101 0100 0001 0010
 Reuslt:       010 0011 1000 0011
 ```
 
-To read the result,
+The first two bits are the **Error Correction** bits, followed by three **Mask Pattern** bits, and ten **BCH Error Correciton** bits.
 
 ```
 Error Correction (2 bits) : 01
@@ -89,19 +89,32 @@ Mask Pattern (3 bits): 000
 BCH Error-Correction (10 bits) : 11 1000 0011
 ```
 
-So now we know we are using Mask 0 which is
+`000` tells us that  we are using Mask 0 which is
 
 > &#x20;$$(i+j)(mod2)==0$$&#x20;
 
-which means if the sum of x and y coordinates is divisible by 2 then XOR with 1.
+which means if the sum of x and y coordinates is divisible by 2 then XOR it with 1.
 
-Using LLM, I wrote a script that can unmask a chunk of the QR code, provided we know we know exactly the coordinates of its bits. Using that script, I unmasked the chunk at the bottom right ( where QR code begins).
+With the help of LLM, I wrote a script that can unmask the QR code.&#x20;
 
-<figure><img src=".gitbook/assets/unmasked_block_19.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/unmasked_block_19.png" alt=""><figcaption><p>The bottom right chunk now unmasked.</p></figcaption></figure>
 
-In the unmasked chunk, we start from the bottom right bit, then its left, then diagonally top right, then left, and repeat. In our case, the first byte is `0100 0100` , followed by `0111 0101`. The first four bits is our mode bits. (`0100` is byte mode which matches our script, feel free to consult the internet for other mode codes). And the next eight bits are the length bits which is `0100 0111`  or 71 in decimal. So now we know the flag has a length of 71. Then we try to read the first char of our flag which we know is 'l' which is `01101100` (or `01001100` for uppercase). However, our next four bits are `0101` , which means something is wrong!
+### Reading the Data
 
-After consulting with teammates, LLM and the Internet. I realized the raw bytes in QR code are not sequential but actually interleveled. Meaning when you read the bytes, they alternative into two sets.&#x20;
+To read the data on a QR code, we start reading it from the bottom right bit. Then the next bit is its left, then diagonally top right, then left, and repeat.
+
+<figure><img src=".gitbook/assets/unmasked_block_19 big-mh-2.png" alt=""><figcaption></figcaption></figure>
+
+* **Mode Bits**: The first four bits are. `0100` is for **byte mode** which matches `mode='byte'` in the python script.
+* **Length Bits:** The eight bits after the Mode Bits. It is the length of our data in binaries. `0100 0111` means the length of our data is 71 bits.
+
+Following the **Mode Bits** and **Length Bits** are the data bits or codewords in our QR code. In our case, it should be a string starting with `lactf{`, so the next eight bits should be 'l' in binaries or `01101100`. However, our next four bits are `0101` instead, which means something is wrong!
+
+After some discussions on Discord, I realized the codewords in our **QR code are not sequential but actually interleveled**. Meaning when you read the bytes, they alternative into two sets.
+
+<figure><img src=".gitbook/assets/QR_Ver3_Codeword_Ordering.svg.jpg" alt=""><figcaption><p>Example of how interleveling works. Note this is version 3, not version 7.</p></figcaption></figure>
+
+
 
 In our case, it means it means after first byte `0100 0100`, it is not followed by the second byte `0111 0101` but rather the third byte, we only know partialy, `11xx xxxx`. That also means the chunk above the bottom right must have `xx01 10xx xxxx xx11 0001 10xx` you read from the botton right zig zag up.&#x20;
 
