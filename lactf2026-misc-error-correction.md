@@ -69,9 +69,9 @@ To continue, we must find out what masking is the QR code using. I looked at the
 
 > To avoid big blobs of white/black area, we run the raw QR code through one of the eight masking pattern to make sure we have a machine readable QR code.
 
-To find out which version of masking we are using, we can use the **Format information** in the QR code. You can find it at the top left Finder chunk. ( The Top Right and Bottom Left Finders each contain half of the Format information as a form of redundancy, in cae the QR code is damaged ).&#x20;
+To find out which version of masking we are using, we can use the **Format information** bits in the QR code. You can find it at the top left Finder chunk. ( The Top Right and Bottom Left Finders each contain half of the Format information as a form of redundancy, in cae the QR code is damaged ).&#x20;
 
-The Format information itself is masked. To unmask it,we must unmask it by XORing it with `101010000010010` to unmask it. (Unlike the data, the Format information always uses the same mask.)
+The Format information itself is masked. We can unmask it by XORing it with `101010000010010`. (Unlike the data, the Format information always uses this mask.)
 
 <figure><img src=".gitbook/assets/block_24-mh.png" alt=""><figcaption><p>Format bits are highlighted here.</p></figcaption></figure>
 
