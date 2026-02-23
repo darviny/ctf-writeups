@@ -15,9 +15,15 @@ description: by pstorm
 >
 > [<sub>https://github.com/uclaacm/lactf-archive/tree/main/2026/misc/error-correction</sub>](https://github.com/uclaacm/lactf-archive/tree/main/2026/misc/error-correction)
 
+## Introduction
+
+This is the second challenge I did for LACTF 2026. The reason I chose it is because it was the only unsolved misc challenge with a good number of solves on the second day.
+
+We are provided a obstrucfued QR code and a python script. Seems simple enough, or so it seems.
+
 ## Recon
 
-First thing I did was throwing the shuffled QR code and the python script into LLM (Gemini 3 Pro) to get a high level overview. Looking at these lines in the script,
+First thing I did was throwing the obstrucfued QR code and the python script into LLM to get a quick overview. The LLM quickly pinpointed these lines,
 
 ```python
 qr = segno.make(flag, mode='byte', error='L', boost_error=False, version=7) 
@@ -29,23 +35,25 @@ chunks = [c for chunk in [[[code[405y+45ysub+9x:405y+45ysub+9*(x+1)] for ysub in
 random.shuffle(chunks)
 ```
 
-It seems a version 7 QR code is generated from a flag, and it is divided into 5x5 chunks, with each piece containing 45 bits, and the chunks are shuffled.&#x20;
+The script generates a version 7 QR code from a flag, then the QR code is divided into 5x5 chunks, with each chunk containing 45 bits, and finally the chunks are shuffled and put back together.
+
+So our job is to unshuffle the chunks and reconstruct the QR code like a jigsaw puzzle.
 
 <figure><img src=".gitbook/assets/chall_1 (1).png" alt=""><figcaption><p>Finders and Alignment patterns</p></figcaption></figure>
 
-Looking at the chall.png, we can see the 3 **Finder** and **Alignment** patterns. So now we just need to unshuffle and reconstruct the QR code.
-
-## Phase 1
+## Solve (Phase 1)
 
 <figure><img src=".gitbook/assets/output-onlinepngtools.png" alt=""><figcaption></figcaption></figure>
 
-First thing to do is to slice the shuffled QR code into 25 chunks with equal size. And like putting a jigsaw puzzle back together, we start from the most obvious chunks – **Finders**, **Alignment** and **Timing**.&#x20;
+1. Slice the QR code into 25 chunks like it was sliced in chall.py.
+2. Find the most obvious chunks – **Finders**, **Alignment** and **Timing**.
 
-**Finders** are the chunks with the big squares, there are three of them –  at top left, top right and bottom left.
-
-**Alignment** are the chunks with smaller squares, there are six of them – at center, top, left, right, bottom and bottom right.
-
-**Timing** are the chunks with dotting lines, there are four of them. Two veritical and two horizontal. The right horizontal and bottom vertical chunks have an identifiable **Version Information** pattern.
+* **Finders** are the chunks with the big squares. (3 chunks)\
+  &#xNAN;_&#x50;osition: top left, top right and bottom left._
+* **Alignment** are the chunks with smaller squares. (6 chunks)\
+  &#xNAN;_&#x50;osition: center, top, left, right, bottom and bottom right._
+* **Timing** are the chunks with dotting lines. (4 chunks)\
+  &#xNAN;_&#x54;wo vertical and two horizontal chunks._ The right horizontal and bottom vertical chunks have an **Version Information** pattern.
 
 <figure><img src=".gitbook/assets/chall_topright_chunk-mh.png" alt=""><figcaption><p>Notice the Timing pattern below the Version Information pattern.</p></figcaption></figure>
 
