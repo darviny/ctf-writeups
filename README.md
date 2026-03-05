@@ -46,7 +46,7 @@ for i in range(0, len(y), samples_per_bit):
 bin = "".join(bits)
 ```
 
-With the binaries fresh out of the oven, and a random binary-to-ASCII decoder I found on Google. (I recognize it is ASCII because we were just talking about it in CPSC 121) And voila, a string that is not complete gibberish shows up. At this point, I was not even sure what a flag looks like. I message Zhou. He explains to me the flag should be in maple{...} format. And that's how I got my first flag.
+With the binaries fresh out of oven, and a random binary-to-ASCII decoder I found on Google. (I recognize it is ASCII because we were just talking about it in CPSC 121) And voila, a string that is not complete gibberish shows up. At this point, I was not even sure what a flag looks like. I message Zhou. He explains to me the flag should be in maple{...} format. And that's how I got my first flag.
 
 > maple{M4ple\_bY\_\_fr<3nd}
 
