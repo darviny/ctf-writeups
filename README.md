@@ -28,6 +28,24 @@ After Zhou leaves, I keep messing with different "perspectives" until I hit the 
 
 I am about to grab a pen and paper to write them manually, but then I remember the library Zhou told me about. With a bit of help from Gemini, I wrote a script that reads the wav file in 10ms chunks and prints 0 or 1 based on the spike direction.
 
+```
+y, sr = librosa.load("maple-signals.wav", sr=None)
+
+samples_per_bit = int(sr * 0.01)
+
+bits = []
+
+for i in range(0, len(y), samples_per_bit):
+    chunk = y[i : i + samples_per_bit]
+    if len(chunk) == 0: continue
+
+    peak = chunk[np.argmax(np.abs(chunk))]
+
+    bits.append("1" if peak > 0 else "0")
+
+bin = "".join(bits)
+```
+
 With the binaries fresh out of the oven, and a random binary-to-ASCII decoder I found on Google. (I recognize it is ASCII because we were just talking about it in CPSC 121) And voila, a string that is not complete gibberish shows up. At this point, I was not even sure what a flag looks like. I message Zhou. He explains to me the flag should be in maple{...} format. And that's how I got my first flag.
 
 p.s. Also thank you to Lyndon who showed me how to actually submit it to maple-chan.
