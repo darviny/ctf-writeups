@@ -4,7 +4,7 @@ description: When the trip to Japan finally paid off
 
 # \[lactf2026] misc/cat-bomb
 
-## <mark style="color:$danger;">Work in Progress</mark>
+## <mark style="color:$danger;"><<<< Work in Progress >>>></mark>
 
 
 
