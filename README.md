@@ -1,5 +1,5 @@
 ---
-description: by yana
+description: 'challenge author: yana'
 ---
 
 # \[1337ctf 2026] misc/maple-signals
