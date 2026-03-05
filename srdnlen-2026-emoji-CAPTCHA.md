@@ -1,5 +1,7 @@
 # \[srdnlen2026] misc/emoji-CAPTCHA
 
+## <mark style="color:$danger;"><<<< Work in Progress >>>></mark>
+
 This challenge looks interesting. I have spent some time dealing with OCR and of course emojis (IYKYK) before and I didn’t hate them.
 
 
