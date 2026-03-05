@@ -28,7 +28,7 @@ After Zhou leaves, I keep messing with different "perspectives" until I hit the 
 
 I am about to grab a pen and paper to write them manually, but then I remember the library Zhou told me about. With a bit of help from Gemini, I wrote a script that reads the wav file in 10ms chunks and prints 0 or 1 based on the spike direction.
 
-```
+```python
 y, sr = librosa.load("maple-signals.wav", sr=None)
 
 samples_per_bit = int(sr * 0.01)
