@@ -1,43 +1,33 @@
 ---
-description: When the trip to Japan finally paid off
+description: by yana
 ---
 
-# \[lactf2026] misc/cat-bomb
+# \[1337ctf 2026] misc/maple-signals
 
-## <mark style="color:$danger;"><<<< Work in Progress >>>></mark>
+A group of ppl are in a circle chatting when I enter the room, with a few others sitting at the sides working solo. I don't recognize any faces, I find an empty seat by the corner and pull up the 1337 CTF page.
 
+It is my first CTF and I know almost nothing about cybersecurity, so I pick the OSINT challenge because it looks the simplest. It is just a photo, can't be that hard right? We are supposed to find the location of where the picture is taken, and the nearby classrooms. I figure the coordinates would be in the metadata, I would pop them into Google Maps, and that would be it.
 
+Using Exiftool (as Gemini recommended), I find noting out of the ordinary in the metadata. So are they really expecting us to walk around and find it? I even begged Aditya, who is right behind me, for a hint, and he just says "Start walking!" I prefer not to sneak around the campus in the evening, so that is the end of my first attempt to solve a challenge.
 
-Flag Objective: Find the coordinates of the photo on Google Street View.
+Pushing forward, I choose the second seem-to-be-the-simplest challenge, Forensics. It is just a wav file. It even comes with a nice short story in the description. Maybe this time, the metadata would prove to be helpful.
 
-> I was hiking in the woods when I stumbled across this amazing thing: thousands of these orange structures! I stopped to take a photo but then this cat _had_ to photo bomb my otherwise perfect photo with it's tail! Can you find where this photo was taken?
->
-> [https://github.com/uclaacm/lactf-archive/tree/main/2026/misc/cat-bomb](https://github.com/uclaacm/lactf-archive/tree/main/2026/misc/cat-bomb)
+And I am wrong again.
 
-From the description, this seems to be a straightforward geoguessing challenge, so I skipped EXIF analysis and went straight to the image.
+Asking Gemini for help. "Download Sonic Visualiser, that's what the pros use," it answers. I am not a pro, but I will use it. Opening the wav file, I am greeted with a solid white bar. Oh, I am zoomed out too far. Zooming in turned the solid bar into a waveform. Cool, but I still have no idea what I am looking at. Playing around with the menus, it seems there are layers of different spectrograms. I cycled through them, zooming in and out. Still no dice. I guess I am not a pro after all.
 
-<figure><img src=".gitbook/assets/cat-bomb.jpeg" alt="" width="375"><figcaption></figcaption></figure>
+The next suggestion Gemini gives me is Slow Scan Television (SSTV). Maybe the flag is an image. Except when I compare the sound of our wav file to an SSTV sample on YouTube, they sound nothing alike. Another dead end.
 
-First thing I noticed in the photo is the long corridor of orange gates covered in Japanese characters. A quick search for "Japan orange gates" turns up very similar photos from **Fushimi Inari Taisha** (伏見稲荷大社). This fits the mountain trail setting, and Wikipedia notes that there are more than 800 gates along the route, both confirming the challenge description.
+Perhaps sensing the hopelessness, Yana comes over to check on me. When I tell her I am stuck, she suggests trying another challenge first, it might be easier, but I told her I want to give this one more hour. She said "It is all about perspective" and leaves.
 
-However, Street View coverage on Fushimi Inari Taisha is inconsistent and spotty. Walking the entire route blindly seems impractical. I need to find a way to narrow down the exact location.
+Then Zhou comes over. "Wanna work together?", and we start showing each other what we have gotten so far. "That looks like a bar code," Zhou says, when I show him one of the spectrograms. We try scanning it with a bar code scanner. Unfortunately, that doesn't work. It would be really cool if it did.
 
-After consulting with my LLM, I realized that these gates are donations from businesses. The donor name is written on the left, and the donation date is on the right. That meant the text on nearby gates could serve as helpful leads.
+However, we go back to the challenge description and notice a weirdly specific detail: 100 BPM. That seems weirdly specific in a block of text that is mostly for flavor. "Does that mean 100ms?" I ask Zhou. "10ms," he replies. (Which turns out, we were both wrong lol. 100 BPM is 1 beat every 600ms.) Then Zhou has to go. Before he leaves, he shows me a Python library called librosa. He has been using to it to interact with the wav file.
 
-On the first gate, I extracted the text "**井上秀人**" using macOS built in OCR. Googling that name alongside "Fushimi Inari Taisha" suggested it was connected to a dental clicnic, but I couldn't find anything that clearly linked to a location on the trail. So I moved on.
+After Zhou leaves, I keep messing with different "perspectives" until I hit the Waveform layer and adjusted the timescale to 10ms. Suddenly, I see it. The waveform is not continuous. There are distinct spikes, some upward, some downward. These patterns seem to have an interval of 10ms, sort of like Morse code.
 
-<figure><img src=".gitbook/assets/1995.jpg" alt=""><figcaption><p>We even found a group photo taken exactly at where our flag is, now we just need to find the coordinates.</p></figcaption></figure>
+I am about to grab a pen and paper to write them manually, but then I remember the library Zhou told me about. With a bit of help from Gemini, I wrote a script that reads the wav file in 10ms chunks and prints 0 or 1 based on the spike direction.
 
-<figure><img src=".gitbook/assets/503752068_2767925523400845_4741724363715104765_n.jpg" alt=""><figcaption></figcaption></figure>
+With the binaries fresh out of the oven, and a random binary-to-ASCII decoder I found on Google. (I recognize it is ASCII because we were just talking about it in CPSC 121) And voila, a string that is not complete gibberish shows up. At this point, I was not even sure what a flag looks like. I message Zhou. He explains to me the flag should be in maple{...} format. And that's how I got my first flag.
 
-On the next gate, "**日光印刷出版社**". This produced much more fruitful results. Using Google Images, I located photos of the same gate from different angles, which revealed the donors of the gates further down the path, giving us more company names as leads.
-
-<figure><img src=".gitbook/assets/e0173645_08173507.jpg" alt="" width="563"><figcaption></figcaption></figure>
-
-Among them "**三鶴工業所**" turned out to the key. Searching "**三鶴工業所 伏見稲荷大社**" led me to a photo featuring an oversized gate with "**日本文化センターグループ**" written on it. This gate is apparently a landmark for many hikers.
-
-Following the source of that photo brought me to a [Japanese hiking blog](https://cnonbe.exblog.jp/28074976/). In the blog, the author mentioned passing **Kumataka-sha (Bear Hawk Shrine)** and **Takeya Rest House**. Further [research](https://en.japantravel.com/kyoto/the-cats-of-fushimi-inari-taisha/15354), showed that Takeya Rest House is famous for its **resident cats**. Now it makes sense why there is a cat photobombing in a mountain trail. In hindsight, the pressence of a cat is actually a more intentional hint than I initially assumed.
-
-With this new context, I searched for **Kumataka-sha** on Google Street View. From there, it only took a few clicks to reach the gate with "**日光印刷出版社**" written on it and where our [flag](https://www.google.com/maps/@34.9681588,135.7772502,3a,90y,287.22h,85.98t/data=!3m7!1e1!3m5!1sG-tGGMaka6g-1r5XO9f5Vg!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D4.019999999999996%26panoid%3DG-tGGMaka6g-1r5XO9f5Vg%26yaw%3D287.22!7i13312!8i6656?entry=ttu\&g_ep=EgoyMDI2MDIxMS4wIKXMDSoASAFQAw%3D%3D) is.
-
-> **`lactf{34.9681588,135.7772502}`**
+p.s. Also thank you to Lyndon who showed me how to actually submit it to maple-chan.
