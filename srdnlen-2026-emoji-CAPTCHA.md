@@ -1,44 +1,63 @@
----
-description: When the trip to Japan finally paid off
----
+# \[srdnlen2026] misc/emoji-CAPTCHA
 
-# \[lactf2026] misc/cat-bomb
-
-Flag Objective: Find the coordinates of the photo on Google Street View.
-
-> I was hiking in the woods when I stumbled across this amazing thing: thousands of these orange structures! I stopped to take a photo but then this cat _had_ to photo bomb my otherwise perfect photo with it's tail! Can you find where this photo was taken?
->
-> [https://github.com/uclaacm/lactf-archive/tree/main/2026/misc/cat-bomb](https://github.com/uclaacm/lactf-archive/tree/main/2026/misc/cat-bomb)
-
-From the description, this seems to be a straightforward geoguessing challenge, so I skipped EXIF analysis and went straight to the image.
-
-<figure><img src=".gitbook/assets/cat-bomb.jpeg" alt="" width="375"><figcaption></figcaption></figure>
-
-First thing I noticed in the photo is the long corridor of orange gates covered in Japanese characters. A quick search for "Japan orange gates" turns up very similar photos from **Fushimi Inari Taisha** (伏見稲荷大社). This fits the mountain trail setting, and Wikipedia notes that there are more than 800 gates along the route, both confirming the challenge description.
-
-However, Street View coverage on Fushimi Inari Taisha is inconsistent and spotty. Walking the entire route blindly seems impractical. I need to find a way to narrow down the exact location.
-
-After consulting with my LLM, I realized that these gates are donations from businesses. The donor name is written on the left, and the donation date is on the right. That meant the text on nearby gates could serve as helpful leads.
-
-On the first gate, I extracted the text "**井上秀人**" using macOS built in OCR. Googling that name alongside "Fushimi Inari Taisha" suggested it was connected to a dental clicnic, but I couldn't find anything that clearly linked to a location on the trail. So I moved on.
-
-<figure><img src=".gitbook/assets/1995.jpg" alt=""><figcaption><p>We even found a group photo taken exactly at where our flag is, now we just need to find the coordinates.</p></figcaption></figure>
-
-<figure><img src=".gitbook/assets/503752068_2767925523400845_4741724363715104765_n.jpg" alt=""><figcaption></figcaption></figure>
-
-On the next gate, "**日光印刷出版社**". This produced much more fruitful results. Using Google Images, I located photos of the same gate from different angles, which revealed the donors of the gates further down the path, giving us more company names as leads.
-
-<figure><img src=".gitbook/assets/e0173645_08173507.jpg" alt="" width="563"><figcaption></figcaption></figure>
-
-Among them "**三鶴工業所**" turned out to the key. Searching "**三鶴工業所 伏見稲荷大社**" led me to a photo featuring an oversized gate with "**日本文化センターグループ**" written on it. This gate is apparently a landmark for many hikers.
-
-Following the source of that photo brought me to a [Japanese hiking blog](https://cnonbe.exblog.jp/28074976/). In the blog, the author mentioned passing **Kumataka-sha (Bear Hawk Shrine)** and **Takeya Rest House**.  Further [research](https://en.japantravel.com/kyoto/the-cats-of-fushimi-inari-taisha/15354), showed that Takeya Rest House is famous for its **resident cats**. Now it makes sense why there is a cat photobombing in a mountain trail. In hindsight, the pressence of a cat is actually a more intentional hint than I initially assumed.
-
-With this new context, I searched for **Kumataka-sha** on Google Street View. From there, it only took a few clicks to reach the gate with "**日光印刷出版社**" written on it and where our [flag](https://www.google.com/maps/@34.9681588,135.7772502,3a,90y,287.22h,85.98t/data=!3m7!1e1!3m5!1sG-tGGMaka6g-1r5XO9f5Vg!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D4.019999999999996%26panoid%3DG-tGGMaka6g-1r5XO9f5Vg%26yaw%3D287.22!7i13312!8i6656?entry=ttu\&g_ep=EgoyMDI2MDIxMS4wIKXMDSoASAFQAw%3D%3D) is.
-
-> #### `lactf{34.9681588,135.7772502}`
-
-&#x20;
+This challenge looks interesting. I have spent some time dealing with OCR and of course emojis (IYKYK) before and I didn’t hate them.
 
 
 
+Without looking at the actual Captcha outputs from the server, I was thinking about building a hash table using the emojis as hash. That idea quickly went away when I got my first sample from the server.
+
+
+
+The Captcha is a fixed size image with two rows of four emojis. The emojis are in fixed locations, same size, non distorted, and the background is always white. What broke the hashtable idea is that they are randomly rotated. This creates antialiasing and if we use loosy matching, then we won’t be able to hit the accuracy we need.
+
+
+
+To get the flag, we must pass 100 rounds of solving the captcha without any mistakes. That’s 800 emojis. Even with 99% accuracy, it will fail.
+
+
+
+After bouncing some ideas with Gemini and consulting Google (actually had to venture into stackoverflow lol), I decided to try building a model with features extracted using Hu Moments and color histograms. These features are the most effective when dealing with rotated images.
+
+
+
+To build the training materials, we need to render the emojis in various angles. The author posted a git hosting the font files. I thought about doing a deep dive into the files (maybe the flag is hidden in there?) but who got time for that.
+
+
+
+With some small hiccups dealing with multi code point (solved with replacing Pillow + RAQG with Cairo), I started iterating on my models with local benchmark. What I found is that, the color histogram is doing most of the work, which in hindsight makes sense because emojis, unlike characters, are lot more richer in terms of color data. Hu Moments is useful for more broad strokes. So the final tuning for the weights is 0.05 Hu Moments and 0.95 Color Histogram.
+
+
+
+At this stage, I was getting 95% accuracy in my local benchmark. And as I said , we need more than 99%. Thankfully, there are enough gaps in the confidence score that I have a pretty good idea which are the risky emojis, about 300 of them out of 3800. So I built a second model using only those emojis but with higher resolution features. And with a cascading solving system. (If the first model has low confidence then use second model) This pushed the accuracy to 97%. Time to test the system live. Then things got weird.
+
+
+
+I was failing at Round One and Two constantly. Something is not right. I looked through the CAPCHA the server is sending, then I noticed some emojis are misrendered. (The layered glyphs don’t have proper offsets) Something sus is going on with the font files.
+
+
+
+I started doing a deep dive on them. I started reading about SBIX and how it stores the rendering data. Are they tempered? That would be one hell of a challenge if they were. I thought about collecting the rendered emoji from the server, that would require a really long time and possibly manual data labeling.
+
+
+
+At this point, I was just ranting to Gemini how stupid emojis are and of course it was invented by Apple for iPhone. Then Gemini started taking about morx table. Apple proprietary version of emoji rendering technology. As soon as I saw the word proprietary, then I knew this is a cross platform problem.
+
+
+
+Our font is the Apple Emoji font, and while it renders flawlessly on my MacBook, there are certain glitches when you run it on a Linux server. To test my hypothesis, I spin up my docker and run the rendering script again. And viola, now we can train the model with matching data with the server.
+
+
+
+With my updated model, I am able to push to Round Ten consistently. (One really lucky run I got to Round 44) That’s still a farcry from Round 100. Then I have this really stupid idea. I am going to manually solve the CAPTCHA. I just want to get the flag and go to sleep.
+
+
+
+So I built a frontend for the solving script. When the confidence level is low, it would show a pop up window with five possible best guesses, and the human (me in my sleep deprived status) would pick the correct one.
+
+
+
+With this human + machine hybrid approach, I was doing better but there is still a gap before we can get to Round 100. While I was doing the CAPCHA manually, I started to notice patterns in the low confidence results. It is not good with samey colors and symmetrical shape. I started building specialized models (faces, hands, clocks, blue squares, purple squares ) and chain them in the cascading solving system.
+
+
+
+About an hour before the deadline, with some luck (there is one specific emoji my system is blind to) and hand eye coordination. I finally got the flag. GGWP
