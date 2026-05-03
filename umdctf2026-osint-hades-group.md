@@ -4,13 +4,15 @@ description: 'chall author: greyroad__'
 
 # \[umdctf2026] osint/hades-group
 
-OSINT is one of my favorite categories in CTF. They usually require a sort of fortitude to stomach with the initial ambiguity, but once you find a lead, the rush is unparalleled in other categories. This chall manages to keep the initial ambiguity limited while giving the same rush to player. This is why i have decided to do a writeup on it.
+OSINT is one of my favorite CTF categories. it usually requires a certain fortitude to sit with the initial ambiguity, but once you find a lead, the rush is unparalleled compared to other categories. This chall manages to keep the initial ambiguity limited while still giving players the same rush. This is why i have decided to write a writeup for it.
 
 ## Overview
 
-The chall comes with a cool background story. ( warning: it is lengthy, tldr at bottom of this section)
+The chall comes with a cool background story. Warning: it is lengthy, TLDR at the bottom of this section
 
-> Case brief On February 3, 2026, a confidential tip reached your desk. "Hades Market", a pseudonymous prediction-market venue listing contracts on real-world outcomes involving journalists, streamers, and political activists, had been traced to a private Telegram channel operating as "Hades Group."&#x20;
+> Case brief&#x20;
+>
+> On February 3, 2026, a confidential tip reached your desk. "Hades Market", a pseudonymous prediction-market venue listing contracts on real-world outcomes involving journalists, streamers, and political activists, had been traced to a private Telegram channel operating as "Hades Group."&#x20;
 >
 > The market was the front: traders took positions on whether specific individuals would be doxxed, swatted, or exposed by specific dates. The Telegram group was the back: a coordination room where the operator brokered the services that settled those contracts (doxxed profiles, coordinated swatting planning, brokered access to private records), so that their own book cleared in their favor.
 >
@@ -20,7 +22,7 @@ The chall comes with a cool background story. ( warning: it is lengthy, tldr at 
 >
 > Flag Submit UMDCTF{REC-XXXXXXX}, where REC-XXXXXXX is the Document Record ID returned by the final document bot at the end of the owner's investigative chain.
 
-Beside the chat history file, we are also provided the following Telegram bots:
+Beside the chat history file, we are also provided with the following Telegram bots:
 
 > * `https://t.me/QuickOSINTSearch_XGBXL_389YBot`: Underground leak database A. Query by username, UID, or phone number.
 > * `https://t.me/EyeOfTheGod_ZF231_389YBot`: Underground leak database B. Different source, different coverage. Query by username, UID, or phone number.
@@ -32,37 +34,39 @@ Beside the chat history file, we are also provided the following Telegram bots:
 > * `https://t.me/USDocs_6C582_389YBot` : US document database. Returns identity records. Query by full name or phone number.
 > * `https://t.me/CountrySearch_U6B8V_389YBot`: Generic document database. Accepts full name and country name as arguments. Has partial overlap with the three regional bots but is the only source for certain records.
 
-As you can see, the author has a lot of efforts preparing for this chall.
+As you can see, the author put a lot of efforts into preparing for this chall.
 
-TLDR: We are given a chat history file of a Telegram channel, our goal is to find the real idendity of the channel owner. Databases are provided to aid us.
+**TLDR:** We are given a chat history file from a Telegram channel, and our goal is to find the real idendity of the channel owner. Several databases via Telegram bots are provided to aid us.
 
 ## Chat History
 
-The first thing we did was examining the chat history raw json file, looking for anything out of order. Most of the time, we won't find anything but it is also effortless. So why not do it.
+The first thing we did was examine the chat history json file, looking for anything out of orindary. Most of the time, this doesn't reveal anything, but it is  effortless, so why not do it.
 
-<figure><img src=".gitbook/assets/Screenshot 2026-05-03 at 11.55.50 AM.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/Screenshot 2026-05-03 at 11.55.50 AM.png" alt=""><figcaption><p>chat history json file</p></figcaption></figure>
 
-Afterward, we made a frontend to parse the log and make them into a more readable format so we can actually read the chat log. Features such as color coding the names and filtering by types of messages make reading experience much more pleasant.
+Afterward, we made a frontend to parse the log and present it in a more readable format so we could actually read through the chat history. Features such as color coding the names and filtering by type made the reading experience much more pleasant.
 
-In total, there are only 400 messages so it doesnt take long to go through them. The contents are what you would expect from a doxxing channel. Dealers selling their database, buyers making requests. From these context, we are able to deduce a few users who could potentially be the channel owner.
+In total, there are only 400 messages so it did not take long to go through them. The contents were what you would expect from a doxxing channel. Dealers selling access to databases, buyers making requests. From this context, we are able to identify a few users who could potentially be the channel owner.
 
-<figure><img src=".gitbook/assets/Screenshot 2026-05-03 at 12.04.33 PM.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/Screenshot 2026-05-03 at 12.04.33 PM.png" alt=""><figcaption><p>frontend of chat history</p></figcaption></figure>
 
 ## Suspects
 
-The first suspect we have is `hermes_locker` or "mason h". He has the most messages in the channel and seems to be one of the major dealers. There are many instances of him interacting with buyers.  Through his username, we found his alias, phone number and eventually his REC-ID via our telegram bots. We tried using it as our flag, however, it was rejected. I guess that would be too obvious.
+The first suspect we have was `hermes_locker` or "mason h". He had the most messages in the channel and seemed to be one of the major dealers. There are many instances of him interacting with buyers.
 
-<figure><img src=".gitbook/assets/Screenshot 2026-05-03 at 1.43.53 PM (1).png" alt=""><figcaption></figcaption></figure>
+Through his username, we found his alias, phone number and eventually his REC-ID via our telegram bots. We tried using it as our flag, however, it was rejected. I guess that would be too obvious.
 
-The second suspect we have is `apollo_trace` or "dani". Similar to `hermes_locker` , he is one of the most active dealers in the channel. We couldn't find anything from his username directly, however, we are able to find his phone number and REC-ID via his alias `phoebus_cache` . We tried it as flag, and it was again, rejected.
+<figure><img src=".gitbook/assets/Screenshot 2026-05-03 at 1.43.53 PM (1).png" alt=""><figcaption><p>Using one the Telegram bots, we found info about hermes_locker</p></figcaption></figure>
 
-This process went on with a few other users who we suspect are dealers. All of them lead to deadends. We are stuck.
+The second suspect we have was `apollo_trace` or "dani". Similar to `hermes_locker` , he was one of the most active dealers in the channel. We could not find anything from his username directly, but  we were able to find his phone number and REC-ID via his alias `phoebus_cache` . We tried it as the flag, and it was rejected again.
+
+This process went on with a few other users we suspected of being  dealers. All of them lead to dead ends. We were stuck.
 
 ## Breakthrough
 
-After going through the usernames in the chat and being stuck. We took a step back and regroup our thoughts. These usernames are most likely red herrings, the key is somewhere else.
+After going through the usernames in the chat and getting stuck. We took a step back and regrouped our thoughts. These usernames were most likely red herrings, the key is somewhere else.
 
-We reread the challenge description and noticed that we never used one of the bots – Sticker Search. However, we don't remember seeing any stickers when we were going through the chat log. So we updated our frontend to filter for any messages that contain stickers. It turns out the sticker message was previously grouped into the channel messages, and we overlooked it.
+We reread the challenge description and noticed that we never used one of the bots: **Sticker Search**. However, we did not remember seeing any stickers when we were going through the chat log. So we updated our frontend to filter for any messages that contain stickers. It turns out the sticker message was previously grouped into the channel messages, and we overlooked it.
 
 <figure><img src=".gitbook/assets/Screenshot 2026-05-03 at 2.10.12 PM.png" alt=""><figcaption></figcaption></figure>
 
