@@ -25,7 +25,15 @@ layout:
 
 # \[1337ctf2026] misc/maple-signals
 
-#### chall author: yana
+{% tabs %}
+{% tab title="Details" %}
+chall author: yana
+{% endtab %}
+{% endtabs %}
+
+
+
+
 
 A group of ppl are in a circle chatting when I enter the room, with a few others sitting at the sides working solo. I don't recognize any faces, I find an empty seat by the corner and pull up the Maple Bacon 1337 CTF page.
 
