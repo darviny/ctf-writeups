@@ -1,7 +1,8 @@
 ---
 description: 'chall author: yana'
 cover: .gitbook/assets/landscape_8343abe8fb00bab9b7e2c00774ffbae2.jpg
-coverY: 0
+coverY: 90.76923076923077
+coverHeight: 408
 layout:
   width: default
   cover:
