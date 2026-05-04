@@ -1,5 +1,4 @@
 ---
-description: 'chall author: yana'
 cover: .gitbook/assets/landscape_8343abe8fb00bab9b7e2c00774ffbae2.jpg
 coverY: 90.76923076923077
 coverHeight: 408
@@ -25,6 +24,20 @@ layout:
 ---
 
 # \[1337ctf2026] misc/maple-signals
+
+Author: Yana
+
+<details>
+
+<summary>Details</summary>
+
+Date: 12/12/2026
+
+Solves: 10
+
+Tools Used: 123123123123
+
+</details>
 
 A group of ppl are in a circle chatting when I enter the room, with a few others sitting at the sides working solo. I don't recognize any faces, I find an empty seat by the corner and pull up the Maple Bacon 1337 CTF page.
 
