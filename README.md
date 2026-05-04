@@ -25,11 +25,11 @@ layout:
 
 # \[1337ctf2026] misc/maple-signals
 
-Author: Yana
+## Challenge Details:
 
 <details>
 
-<summary>Details</summary>
+<summary>Author: Yana</summary>
 
 Date: 12/12/2026
 
