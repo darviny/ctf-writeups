@@ -30,6 +30,8 @@ tags:
 
 A group of ppl are in a circle chatting when I enter the room, with a few others sitting at the sides working solo. I don't recognize any of the faces, so I find an empty seat by the corner and pull up the [Maple Bacon 1337 CTF page](https://maplebacon.org/challenge/).
 
+## Maple Bacon
+
 It is my first CTF. I know almost nothing about cybersecurity. I scroll through the challenges and pick the OSINT one because it looks the simplest. It is just a photo in .JPG format, can't be that hard right? The goal is to find the location of where the picture was taken and the nearby classrooms. I figure the coordinates would be in the metadata, then I would pop them into Google Maps, and that would be it.
 
 Using **Exiftool** (as Gemini recommended), I find nothing useful in the metadata. So are they really expecting us to walk around and physically find it? I beg Aditya, who is right behind me, for a hint. He smirks at me and says "Start walking!". I prefer not to sneak around the campus in the evening, so that is the end of my first attempt to solve a challenge.
@@ -57,8 +59,6 @@ Switching back to Sonic Visualiser, I continue playing with the different "persp
 <figure><img src=".gitbook/assets/Screenshot 2026-03-04 at 6.19.06 PM.png" alt=""><figcaption><p>Example of an upward spike that would transcribe to 1 in binaries.</p></figcaption></figure>
 
 I am about to grab a pen to write the code manually, but then I remember the Python library Zhou just showed me. With a bit of help from Gemini to understand the API, I now have a Python script that reads the .WAV file in 10ms chunks and prints 0 or 1 depending on the spike direction.
-
-## Solve Script
 
 ```python
 y, sr = librosa.load("maple-signals.wav", sr=None)
