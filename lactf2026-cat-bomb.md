@@ -1,5 +1,27 @@
 ---
 description: When the trip to Japan finally paid off
+cover: .gitbook/assets/IMG_7635.PNG
+coverY: 0
+coverHeight: 399
+layout:
+  width: default
+  cover:
+    visible: true
+    size: hero
+  title:
+    visible: true
+  description:
+    visible: true
+  tableOfContents:
+    visible: true
+  outline:
+    visible: true
+  pagination:
+    visible: true
+  metadata:
+    visible: true
+  tags:
+    visible: true
 ---
 
 # \[lactf2026] misc/cat-bomb
@@ -32,13 +54,8 @@ On the next gate, "**日光印刷出版社**". This produced much more fruitful 
 
 Among them "**三鶴工業所**" turned out to the key. Searching "**三鶴工業所 伏見稲荷大社**" led me to a photo featuring an oversized gate with "**日本文化センターグループ**" written on it. This gate is apparently a landmark for many hikers.
 
-Following the source of that photo brought me to a [Japanese hiking blog](https://cnonbe.exblog.jp/28074976/). In the blog, the author mentioned passing **Kumataka-sha (Bear Hawk Shrine)** and **Takeya Rest House**.  Further [research](https://en.japantravel.com/kyoto/the-cats-of-fushimi-inari-taisha/15354), showed that Takeya Rest House is famous for its **resident cats**. Now it makes sense why there is a cat photobombing in a mountain trail. In hindsight, the pressence of a cat is actually a more intentional hint than I initially assumed.
+Following the source of that photo brought me to a [Japanese hiking blog](https://cnonbe.exblog.jp/28074976/). In the blog, the author mentioned passing **Kumataka-sha (Bear Hawk Shrine)** and **Takeya Rest House**. Further [research](https://en.japantravel.com/kyoto/the-cats-of-fushimi-inari-taisha/15354), showed that Takeya Rest House is famous for its **resident cats**. Now it makes sense why there is a cat photobombing in a mountain trail. In hindsight, the pressence of a cat is actually a more intentional hint than I initially assumed.
 
 With this new context, I searched for **Kumataka-sha** on Google Street View. From there, it only took a few clicks to reach the gate with "**日光印刷出版社**" written on it and where our [flag](https://www.google.com/maps/@34.9681588,135.7772502,3a,90y,287.22h,85.98t/data=!3m7!1e1!3m5!1sG-tGGMaka6g-1r5XO9f5Vg!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D4.019999999999996%26panoid%3DG-tGGMaka6g-1r5XO9f5Vg%26yaw%3D287.22!7i13312!8i6656?entry=ttu\&g_ep=EgoyMDI2MDIxMS4wIKXMDSoASAFQAw%3D%3D) is.
 
-> #### `lactf{34.9681588,135.7772502}`
-
-&#x20;
-
-
-
+> **`lactf{34.9681588,135.7772502}`**
