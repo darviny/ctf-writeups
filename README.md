@@ -52,7 +52,7 @@ Then Zhou, who sits at the other corner of the room, rolls his chair over and as
 
 Part not willing to admit defeat, part trying to impress each other, we find ourselves staring at the challenge description for a period of time that exceeds the social norm. A weirdly specific detail starts catching our attention: **100 BPM**.&#x20;
 
-It seems weirdly specific to include that in a block of text that is mostly for flavor. "Does that mean 100ms?" I ask Zhou. "10ms," he replies. (Which turns out, we were both wrong lol. 100 BPM is 1 beat every 600ms.) Then Zhou has to go. Before he leaves, he shows me a Python library called `librosa`. He has been using it to read the .WAV file in his Python script.
+It seems weirdly specific to include that in a block of text that is mostly for flavor. "Does that mean 100ms?" I ask Zhou. "10ms," he replies. (Which turns out, we were both wrong lol. 100 BPM is 1 beat every 600ms. 100Hz is 10ms.) Then Zhou has to go. Before he leaves, he shows me a Python library called `librosa`. He has been using it to read the .WAV file in his Python script.
 
 Switching back to Sonic Visualiser, I continue playing with the different "perspectives". Then suddenly, I see it. In the **Waveform** layer, with the timescale sets to **10ms**, the waveform is not continuous anymore. There are distinct spikes, some upward, some downward, hidden in constant intervals, sort of like Morse code.
 
@@ -61,8 +61,8 @@ Switching back to Sonic Visualiser, I continue playing with the different "persp
 I am about to grab a pen to write the code manually, but then I remember the Python library Zhou just showed me. With a bit of help from Gemini to understand the API, I now have a Python script that reads the .WAV file in 10ms chunks and prints 0 or 1 depending on the spike direction.
 
 ```python
-y, sr = librosa.load("maple-signals.wav", sr=None)
-samples_per_bit = int(sr * 0.01)
+y, samples_rates = librosa.load("maple-signals.wav", samples_rates=None)
+samples_per_bit = int(samples_rates * 0.01)
 bits = []
 
 for i in range(0, len(y), samples_per_bit):
