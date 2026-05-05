@@ -36,9 +36,27 @@ It is my first CTF. I know almost nothing about cybersecurity. I scroll through 
 
 Using **Exiftool** (as Gemini recommended), I find nothing useful in the metadata. So are they really expecting us to walk around and physically find it? I beg Aditya, who is right behind me, for a hint. He smirks at me and says "Start walking!". I prefer not to sneak around the campus in the evening, so that is the end of my first attempt to solve a challenge.
 
-Pushing forward, I pick the second seem-to-be-the-simplest challenge – Forensics. It is just a .WAV file. It even comes with a nice short story in the description. Maybe this time, the metadata would prove to be helpful. And I am wrong again.
+Pushing forward, I pick the second seem-to-be-the-simplest challenge – Forensics. It is just a .WAV file. It even comes with a nice short story in the description. Maybe this time, the metadata would prove to be helpful.&#x20;
 
-Not knowing what to do, I ask Gemini for help again. "Download **Sonic Visualiser**, that's what the pros use," it answers. I am not a pro, but I will use it. Opening the .WAV file, I am greeted with a solid blue bar. Oh, I am zoomed out too far. As I zoom in, the solid bar starts to turn into a waveform. Cool, but I still have no idea what I am looking at. Playing around with the menus, it seems there are layers of different [spectrograms](https://en.wikipedia.org/wiki/Spectrogram). After cycling through all of them, zooming in and out, I am still clueless about where the flag is. I guess I am not a pro after all.
+> ## Forensics - maple signals <a href="#forensics---maple-signals" id="forensics---maple-signals"></a>
+>
+> **Author:** [Yana](https://maplebacon.org/authors/yana/)
+>
+> Hey, I am sending you my new sample. I know you have been waiting for a long time. It is not meant to be listened to like a normal track, but you’ll recognize what to do once you open it. Everything you need is already inside the sound - nothing extra. Handle it the same way we always do.
+>
+> Let me know when you get the message ;)
+>
+> **Details:**
+>
+> * Genre: experimental
+> * Tempo: \~100 BPM
+> * Key: doesn’t really matter, u will see it
+>
+> #### Files <a href="#files-3" id="files-3"></a>
+>
+> * [`maple-signals.wav`](https://maplebacon.org/assets/1337-2026/forensics/maple-signals.wav)
+
+And I am wrong again. Not knowing what to do, I ask Gemini for help again. "Download **Sonic Visualiser**, that's what the pros use," it answers. I am not a pro, but I will use it. Opening the .WAV file, I am greeted with a solid blue bar. Oh, I am zoomed out too far. As I zoom in, the solid bar starts to turn into a waveform. Cool, but I still have no idea what I am looking at. Playing around with the menus, it seems there are layers of different [spectrograms](https://en.wikipedia.org/wiki/Spectrogram). After cycling through all of them, zooming in and out, I am still clueless about where the flag is. I guess I am not a pro after all.
 
 <figure><img src=".gitbook/assets/Screenshot 2026-03-04 at 6.25.42 PM.png" alt=""><figcaption><p>Sonic Visualiser</p></figcaption></figure>
 
