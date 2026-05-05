@@ -1,5 +1,5 @@
 ---
-description: by burturt
+description: 'chall author: burturt'
 cover: .gitbook/assets/IMG_7635.PNG
 coverY: -54.65769230769233
 coverHeight: 399
