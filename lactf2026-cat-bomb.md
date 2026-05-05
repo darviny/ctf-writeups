@@ -1,7 +1,7 @@
 ---
 description: by burturt
 cover: .gitbook/assets/IMG_7635.PNG
-coverY: 0
+coverY: -54.65769230769233
 coverHeight: 399
 layout:
   width: default
