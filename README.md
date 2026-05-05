@@ -1,4 +1,5 @@
 ---
+description: 'chall author: yana'
 cover: .gitbook/assets/landscape_8343abe8fb00bab9b7e2c00774ffbae2.jpg
 coverY: 90.76923076923077
 coverHeight: 408
@@ -25,18 +26,7 @@ layout:
 
 # \[1337ctf2026] misc/maple-signals
 
-{% tabs %}
-{% tab title="Details" %}
-chall author: [**yana**](https://maplebacon.org/authors/yana/)\
-files: [**maple\_signals.wav**](https://maplebacon.org/assets/1337-2026/forensics/maple-signals.wav)\
-\
-LLM used: **Gemini 3.0 Pro**\
-time taken: **\~3 hr**\
-date: **1/16/2026**
-{% endtab %}
-{% endtabs %}
-
-
+## Maple Bacon
 
 A group of ppl are in a circle chatting when I enter the room, with a few others sitting at the sides working solo. I don't recognize any faces, I find an empty seat by the corner and pull up the Maple Bacon 1337 CTF page.
 
@@ -95,3 +85,15 @@ With the binaries fresh out of oven, and a random binary-to-ASCII decoder I foun
 > maple{M4ple\_bY\_\_fr<3nd}
 
 p.s. Also thank you to Lyndon who showed me how to actually submit it to maple-chan.
+
+{% tabs %}
+{% tab title="Details" %}
+chall author: [**yana**](https://maplebacon.org/authors/yana/)\
+files: [**maple\_signals.wav**](https://maplebacon.org/assets/1337-2026/forensics/maple-signals.wav)\
+\
+LLM used: **Gemini 3.0 Pro**\
+time to solve: **\~3 hr**\
+date: **1/16/2026**
+{% endtab %}
+{% endtabs %}
+
