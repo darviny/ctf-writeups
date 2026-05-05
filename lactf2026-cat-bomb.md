@@ -1,5 +1,5 @@
 ---
-description: When the trip to Japan finally paid off
+description: by burturt
 cover: .gitbook/assets/IMG_7635.PNG
 coverY: 0
 coverHeight: 399
@@ -24,7 +24,7 @@ layout:
     visible: true
 ---
 
-# \[lactf2026] misc/cat-bomb
+# \[lactf2026] misc/cat-bomb!
 
 Flag Objective: Find the coordinates of the photo on Google Street View.
 
