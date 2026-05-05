@@ -80,7 +80,7 @@ I am about to grab a pen to write the code manually, but then I remember the Pyt
 
 ```python
 y, samples_rates = librosa.load("maple-signals.wav", samples_rates=None)
-samples_per_bit = int(samples_rates * 0.01)
+samples_per_bit = int(samples_rates * 0.01) # samples_rates is samples per second
 bits = []
 
 for i in range(0, len(y), samples_per_bit):
