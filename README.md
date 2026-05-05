@@ -1,5 +1,5 @@
 ---
-description: 'chall author: yana'
+description: 'chall author: Yana'
 cover: .gitbook/assets/landscape_8343abe8fb00bab9b7e2c00774ffbae2.jpg
 coverY: 90.76923076923077
 coverHeight: 408
@@ -102,7 +102,7 @@ p.s. Also thank you to Lyndon who showed me how to actually submit it to maple-c
 
 {% tabs %}
 {% tab title="Details" %}
-chall author: [**yana**](https://maplebacon.org/authors/yana/)\
+chall author: [**Yana**](https://maplebacon.org/authors/yana/)\
 files: [**maple\_signals.wav**](https://maplebacon.org/assets/1337-2026/forensics/maple-signals.wav)\
 \
 <sup>LLM used:</sup> <sup></sup><sup>**Gemini 3.0 Pro**</sup>\
