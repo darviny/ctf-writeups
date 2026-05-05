@@ -22,6 +22,8 @@ layout:
     visible: true
   tags:
     visible: true
+tags:
+  - steg
 ---
 
 # \[1337ctf2026] forensics/maple-signals
