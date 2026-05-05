@@ -79,12 +79,12 @@ Switching back to Sonic Visualiser, I continue playing with the different "persp
 I am about to grab a pen to write the code manually, but then I remember the Python library Zhou just showed me. With a bit of help from Gemini to understand the API, I now have a Python script that reads the .WAV file in 10ms chunks and prints 0 or 1 depending on the spike direction.
 
 ```python
-y, samples_rates = librosa.load("maple-signals.wav", samples_rates=None)
-samples_per_bit = int(samples_rates * 0.01) # samples_rates is samples per second
+y, samples_per_second = librosa.load("maple-signals.wav", samples_rates=None)
+samples_per_chunk = int(samples_per_second * 0.01) # 44100 samples/sec * 10ms = 441 samples
 bits = []
 
-for i in range(0, len(y), samples_per_bit):
-    chunk = y[i : i + samples_per_bit]
+for i in range(0, len(y), samples_per_chunk):
+    chunk = y[i : i + samples_per_chunk]
     if len(chunk) == 0: continue
     peak = chunk[np.argmax(np.abs(chunk))]
     bits.append("1" if peak > 0 else "0")
