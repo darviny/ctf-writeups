@@ -91,9 +91,9 @@ p.s. Also thank you to Lyndon who showed me how to actually submit it to maple-c
 chall author: [**yana**](https://maplebacon.org/authors/yana/)\
 files: [**maple\_signals.wav**](https://maplebacon.org/assets/1337-2026/forensics/maple-signals.wav)\
 \
-LLM used: **Gemini 3.0 Pro**\
-time to solve: **\~3 hr**\
-date: **1/16/2026**
+LLM used: Gemini 3.0 Pro\
+time to solve: \~3 hr\
+date: 1/16/2026
 {% endtab %}
 {% endtabs %}
 
