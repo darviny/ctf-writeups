@@ -1,3 +1,6 @@
 - tag: steg
   label: steg
-  color: green
+  color: violet
+- tag: geoguessing
+  label: geoguessing
+  color: blue

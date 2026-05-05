@@ -22,6 +22,8 @@ layout:
     visible: true
   tags:
     visible: true
+tags:
+  - geoguessing
 ---
 
 # \[lactf2026] misc/cat-bomb!
