@@ -27,11 +27,14 @@ layout:
 
 {% tabs %}
 {% tab title="Details" %}
-chall author: yana
+<sub>chall author:</sub> [<sub>**yana**</sub>](https://maplebacon.org/authors/yana/)\
+<sub>files:</sub> [<sub>**maple\_signals.wav**</sub>](https://maplebacon.org/assets/1337-2026/forensics/maple-signals.wav)\
+\
+<sub>LLM used:</sub> <sub></sub><sub>**Gemini 3.0 Pro**</sub>\
+<sub>time taken:</sub> <sub></sub><sub>**\~3 hr**</sub>\
+<sub>date:</sub> <sub></sub><sub>**1/16/2026**</sub>
 {% endtab %}
 {% endtabs %}
-
-
 
 
 
