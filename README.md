@@ -56,7 +56,7 @@ Pushing forward, I pick the second seem-to-be-the-simplest challenge – Forensi
 >
 > * [`maple-signals.wav`](https://maplebacon.org/assets/1337-2026/forensics/maple-signals.wav)
 
-And I am wrong again. Not knowing what to do, I ask Gemini for help again. "Download **Sonic Visualiser**, that's what the pros use," it answers. I am not a pro, but I will use it. Opening the .WAV file, I am greeted with a solid blue bar. Oh, I am zoomed out too far. As I zoom in, the solid bar starts to turn into a waveform. Cool, but I still have no idea what I am looking at. Playing around with the menus, it seems there are layers of different [spectrograms](https://en.wikipedia.org/wiki/Spectrogram). After cycling through all of them, zooming in and out, I am still clueless about where the flag is. I guess I am not a pro after all.
+And I am wrong again. There don't seem to be any hints in the metadata. Not knowing what else to do, I ask Gemini for help again. "Download **Sonic Visualiser**, that's what the pros use," it answers. I am not a pro, but I will use it. Opening the .WAV file, I am greeted with a solid blue bar. Oh, I am zoomed out too far. As I zoom in, the solid bar starts to turn into a waveform. Cool, but I still have no idea what I am looking at. Playing around with the menus, it seems there are layers of different [spectrograms](https://en.wikipedia.org/wiki/Spectrogram). After cycling through all of them, zooming in and out, I am still clueless about where the flag is. I guess I am not a pro after all.
 
 <figure><img src=".gitbook/assets/Screenshot 2026-03-04 at 6.25.42 PM.png" alt=""><figcaption><p>Sonic Visualiser</p></figcaption></figure>
 
