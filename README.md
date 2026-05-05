@@ -62,9 +62,7 @@ Going back to Sonic Visualiser, I keep playing with the different "perspectives"
 
 <figure><img src=".gitbook/assets/Screenshot 2026-03-04 at 6.19.06 PM.png" alt=""><figcaption><p>Example of an upward spike that would transcribe to 1 in binaries.</p></figcaption></figure>
 
-I am about to grab a pen to write the code manually, then I remember the Python library Zhou just told me. With a bit of help from Gemini, I wrote a Python script that reads the .WAV file in 10ms chunks and prints 0 or 1 depending on the spike direction.
-
-## Solve Script
+I am about to grab a pen to write the code manually, then I remember the Python library Zhou just told me. With a bit of help from Gemini to understand the API, I now have a Python script that reads the .WAV file in 10ms chunks and prints 0 or 1 depending on the spike direction.
 
 ```python
 y, sr = librosa.load("maple-signals.wav", sr=None)
@@ -80,7 +78,7 @@ for i in range(0, len(y), samples_per_bit):
 bin = "".join(bits)
 ```
 
-With the binaries fresh out of oven, and a random binary-to-ASCII decoder I found on Google. (I recognize it is ASCII because we were just talking about it in CPSC 121). A string that is not complete gibberish shows up. At this point, I am not even sure what a flag looks like. I message Zhou. He explains to me the flag should be in maple{...} format. And that's how I got my first flag.
+With the binaries fresh out of oven, and a random binary-to-ASCII decoder I found on Google. (I recognize it is ASCII because we were just talking about it in CPSC 121). A string that is not complete gibberish shows up. At this point, I am not even sure what a flag looks like. I message Zhou. He explains to me the flag should be in `maple{...}` format. And that's how I got my first flag.
 
 p.s. Also thank you to Lyndon who showed me how to actually submit it to maple-chan.
 
