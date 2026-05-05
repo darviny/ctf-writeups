@@ -1,6 +1,6 @@
 - tag: steg
   label: steg
-  color: $tint
+  color: $primary
 - tag: geoguessing
   label: geoguessing
   color: $primary
