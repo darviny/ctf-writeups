@@ -68,7 +68,7 @@ Then Zhou, who sits at the other corner of the room, rolls his chair over and as
 
 <figure><img src=".gitbook/assets/Screenshot 2026-03-04 at 6.19.24 PM.png" alt=""><figcaption><p>The "Bar Code"</p></figcaption></figure>
 
-Part not willing to admit defeat, part trying to impress each other, we find ourselves staring at the challenge description for a period of time that exceeds the social norm. A small detail starts catching our attention: **100 BPM**.&#x20;
+Part not willing to admit defeat, part trying to impress each other, we find ourselves staring at the challenge description, then a small detail starts catching our attention: **100 BPM**.&#x20;
 
 It seems weirdly specific to include that in a block of text that is mostly for flavor. "Does that mean 100ms?" I ask Zhou. "**10ms**," he replies. (As it turns out, we were both wrong lol. 100 BPM is 1 beat every 600ms. We were thinking 100Hz which is 1 cycle per 10ms.) Then Zhou has to go. Before he leaves, he shows me a Python library called `librosa`. He has been using it to read the .WAV file in his Python script.
 
