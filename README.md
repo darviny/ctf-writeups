@@ -84,7 +84,7 @@ A .WAV file usually has the [sampling rate](https://en.wikipedia.org/wiki/Sampli
 
 <table><thead><tr><th width="206">Samples</th><th>Level</th></tr></thead><tbody><tr><td>1</td><td>0.8</td></tr><tr><td>2</td><td>0.79189396</td></tr><tr><td>3</td><td>0.7677402</td></tr><tr><td>...</td><td>...</td></tr><tr><td>439</td><td>0.7280281</td></tr><tr><td>440</td><td>0.7677402</td></tr><tr><td>441</td><td>0.79189396</td></tr></tbody></table>
 
-In our .WAV file, the peak is always at the first sample of each chunk. So when we have two chunks that correlate to alternate values, for example `10` , then last sample of the first chunk and the first sample of the second chunk would be `0.79189396` and -`0.8` . This discontinuity creates the spikes we see.
+In our .WAV file, the peak is always at the first sample of each chunk. So when we have two chunks that correlate to alternate values, for example `10` , then last sample of the first chunk and the first sample of the second chunk would be `0.79189396` and `-0.8` . This discontinuity creates the spikes we see.
 
 ```python
 import librosa
