@@ -111,6 +111,12 @@ At this point, I am still not sure exactly what a flag looks like, so I message 
 
 p.s. Also thank you to Lyndon who showed me how to actually submit it to maple-chan.
 
+## Takeaway
+
+* Submit your flags to @Maple-chan in Discord, e.g. `/submit maple{test}`.&#x20;
+* The complexity of a chall's setup doesn't correlate to its difficutly. A chall with a single .JPG file could also be the most difficult one.
+* Work with others, espeically when you are stuck. I never found out if the 100 BMP -> 100 Hz leap of logic was intentional, or it was just luck. But it did help us solve the chall.
+
 ## Flag
 
 > ### **`maple{M4ple_bY__fr<3nd}`**
