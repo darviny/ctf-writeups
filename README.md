@@ -105,8 +105,6 @@ print(bin)
 
 With the binaries fresh out of the oven, and a random [binary-to-ASCII decoder](https://www.rapidtables.com/convert/number/binary-to-ascii.html) I found on Google (I recognize it is ASCII because we were just talking about it in CPSC 121), a string that is not complete gibberish shows up.
 
-<figure><img src=".gitbook/assets/Screenshot 2026-05-05 at 5.00.15 PM.png" alt="" width="563"><figcaption></figcaption></figure>
-
 At this point, I am still not sure exactly what a flag looks like, so I message Zhou. He explains to me the flag should be in `maple{...}` format. And that's how I got my first flag.
 
 p.s. Also thank you to Lyndon who showed me how to actually submit it to maple-chan.
