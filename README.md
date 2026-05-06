@@ -56,13 +56,13 @@ Pushing forward, I pick the second seem-to-be-the-simplest challenge – Forensi
 >
 > * [`maple-signals.wav`](https://maplebacon.org/assets/1337-2026/forensics/maple-signals.wav)
 
-And I am wrong again. There don't seem to be any hints in the metadata. Not knowing what else to do, I ask Gemini for help. "Download [**Sonic Visualiser**](https://www.sonicvisualiser.org/), that's what the pros use," it answers. I am not a pro, but I will use it. Opening the .WAV file, I am greeted with a solid blue bar. Oh, I am zoomed out too far. As I zoom in, the solid bar starts to turn into a waveform. Cool, but I still have no idea what I am looking at. Playing around with the menus, it seems beside waveform, there are also different [spectrograms](https://en.wikipedia.org/wiki/Spectrogram) layers. After cycling through all of them, zooming in and out, I am still clueless about where the flag is. I guess I am not a pro after all.
+And I am wrong again. There don't seem to be any hints in the metadata. Not knowing what else to do, I ask Gemini for help. "Download [**Sonic Visualiser**](https://www.sonicvisualiser.org/), that's what the pros use," it answers. I am not a pro, but I will use it. Opening the .WAV file, I am greeted with a solid blue bar. Oh, I am zoomed out too far. As I zoom in, the solid bar starts to turn into a waveform. Cool, but I still have no idea what I am looking at. Playing around with the menus, it seems beside waveform, there are also different [spectrogram](https://en.wikipedia.org/wiki/Spectrogram) layers. After cycling through all of them, zooming in and out, I am still clueless about where the flag is. I guess I am not a pro after all.
 
 <div><figure><img src=".gitbook/assets/Screenshot 2026-05-05 at 3.38.01 PM.png" alt=""><figcaption><p>The solid blue bar</p></figcaption></figure> <figure><img src=".gitbook/assets/Screenshot 2026-05-05 at 3.29.06 PM.png" alt=""><figcaption><p>After zooming in</p></figcaption></figure> <figure><img src=".gitbook/assets/Screenshot 2026-05-05 at 3.34.00 PM.png" alt=""><figcaption><p>Spectrogram</p></figcaption></figure></div>
 
 The next suggestion Gemini gives me is [Slow Scan Television (SSTV)](https://en.wikipedia.org/wiki/Slow-scan_television). Maybe the flag is an image hidden in the spectrogram. Except when I compare the sound of our [.WAV file](https://maplebacon.org/assets/1337-2026/forensics/maple-signals.wav) to a SSTV sample on [YouTube](https://www.youtube.com/watch?v=EJbFg4sjINo), they sound nothing alike. Another dead end.
 
-Perhaps sensing the hopelessness, Yana comes over to check on me. After seeing that I am stuck, she suggests trying another challenge. It might be easier. I tell her I want to give this one more hour. She looks at me and says "It is all about perspective." and leaves.
+Perhaps sensing the hopelessness, Yana comes over to check on me. After seeing that I am stuck, she suggests trying another challenge. It might be easier. I tell her I want to give this one more hour. She looks at me and says "It is all about perspective," and leaves.
 
 Then Zhou, who sits at the other corner of the room, rolls his chair over and asks "Wanna work together?" We show each other what we have gotten so far. When I show him one of the spectrograms, he says "That looks like a bar code." We try scanning it with a bar code scanner. Unfortunately, it doesn't work. It would be really cool if it does.
 
@@ -70,9 +70,9 @@ Then Zhou, who sits at the other corner of the room, rolls his chair over and as
 
 Part not willing to admit defeat, part trying to impress each other, we find ourselves staring at the challenge description for a period of time that exceeds the social norm. A small detail starts catching our attention: **100 BPM**.&#x20;
 
-It seems weirdly specific to include that in a block of text that is mostly for flavor. "Does that mean 100ms?" I ask Zhou. "**10ms**," he replies. (Which turns out, we were both wrong lol. 100 BPM is 1 beat every 600ms. We were thinking 100Hz which is 1 cycle per 10ms.) Then Zhou has to go. Before he leaves, he shows me a Python library called `librosa`. He has been using it to read the .WAV file in his Python script.
+It seems weirdly specific to include that in a block of text that is mostly for flavor. "Does that mean 100ms?" I ask Zhou. "**10ms**," he replies. (As it turns out, we were both wrong lol. 100 BPM is 1 beat every 600ms. We were thinking 100Hz which is 1 cycle per 10ms.) Then Zhou has to go. Before he leaves, he shows me a Python library called `librosa`. He has been using it to read the .WAV file in his Python script.
 
-Switching back to Sonic Visualiser, I continue playing with the different "perspectives". Then suddenly, I see it. In the **Waveform** layer, with the timescale sets to **10ms**, the waveform is not continuous anymore. There are distinct spikes, some upward, some downward, hidden in constant intervals, sort of like Morse code.
+Switching back to Sonic Visualiser, I continue playing with the different "perspectives". Then suddenly, I see it. In the **Waveform** layer, with the timescale sets to **10ms**, the waveform is not continuous anymore. There are distinct spikes, some upward, some downward, hidden at constant intervals, sort of like Morse code.
 
 <figure><img src=".gitbook/assets/Screenshot 2026-03-04 at 6.19.06 PM (1).png" alt=""><figcaption><p>The "perspective" showing the spikes.</p></figcaption></figure>
 
@@ -84,7 +84,7 @@ A .WAV file usually has the [sampling rate](https://en.wikipedia.org/wiki/Sampli
 
 <table><thead><tr><th width="206">Samples</th><th>Level</th></tr></thead><tbody><tr><td>1</td><td>0.8</td></tr><tr><td>2</td><td>0.79189396</td></tr><tr><td>3</td><td>0.7677402</td></tr><tr><td>...</td><td>...</td></tr><tr><td>439</td><td>0.7280281</td></tr><tr><td>440</td><td>0.7677402</td></tr><tr><td>441</td><td>0.79189396</td></tr></tbody></table>
 
-In our .WAV file, the peak is always at the first sample of each chunk. So when we have a two chunks that correlates to alternate values, for example `10` , then last sample of the first chunk and the first sample of the second chunk would be `0.79189396` and -`0.8` . This discotinuity creates the spikes we see.
+In our .WAV file, the peak is always at the first sample of each chunk. So when we have two chunks that correlate to alternate values, for example `10` , then last sample of the first chunk and the first sample of the second chunk would be `0.79189396` and -`0.8` . This discontinuity creates the spikes we see.
 
 ```python
 import librosa
@@ -105,7 +105,7 @@ print(bin)
 
 With the binaries fresh out of the oven, and a random [binary-to-ASCII decoder](https://www.rapidtables.com/convert/number/binary-to-ascii.html) I found on Google (I recognize it is ASCII because we were just talking about it in CPSC 121), a string that is not complete gibberish shows up.
 
-At this point, I am still not sure exactly what a flag looks like, so I message Zhou. He explains to me the flag should be in `maple{...}` format. And that's how I got my first flag.
+At this point, I am still not sure exactly what a flag looks like, so I message Zhou. He explains that the flag should be in `maple{...}` format. And that's how I got my first flag.
 
 p.s. Also thank you to Lyndon who showed me how to actually submit it to maple-chan.
 
@@ -116,8 +116,8 @@ p.s. Also thank you to Lyndon who showed me how to actually submit it to maple-c
 ## Takeaway
 
 * Submit your flags to @Maple-chan in Discord, e.g. `/submit maple{test}`.&#x20;
-* The complexity of a chall's setup doesn't correlate to its difficutly. A chall with a single .JPG file could also be the most difficult one.
-* Work with others, espeically when you are stuck. I never found out if the 100 BMP -> 100 Hz leap of logic was intentional, or it was just luck. But it did help us solve the chall.
+* The complexity of a chall's setup doesn't correlate to its difficulty. A chall with a single .JPG file could also be the most difficult one.
+* Work with others, especially when you are stuck. I never found out if the 100 BPM -> 100 Hz leap of logic was intentional, or whether it was just luck. But it did help us solve the chall.
 
 {% tabs %}
 {% tab title="Details" %}
