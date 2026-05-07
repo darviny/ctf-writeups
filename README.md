@@ -26,9 +26,9 @@ tags:
   - steg
 ---
 
-# \[1337ctf2026] forensics/maple-signals
+# \[1337Challenges 2026] forensics/maple-signals
 
-A group of ppl are in a circle chatting when I enter the room, with a few others sitting at the sides working solo. I don't recognize any of the faces, so I find an empty seat by the corner and pull up the [Maple Bacon 1337 CTF page](https://maplebacon.org/challenge/).
+A group of ppl are in a circle chatting when I enter the room, with a few others sitting at the sides working solo. I don't recognize any of the faces, so I find an empty seat by the corner and pull up the [Maple Bacon 1337 Challenges page](https://maplebacon.org/challenge/).
 
 ## Maple Bacon
 
@@ -121,9 +121,6 @@ p.s. Also thank you to Lyndon who showed me how to actually submit it to maple-c
 
 {% tabs %}
 {% tab title="Details" %}
-chall author: [**Yana**](https://maplebacon.org/authors/yana/)\
-files: [**maple\_signals.wav**](https://maplebacon.org/assets/1337-2026/forensics/maple-signals.wav)\
-\
 <sup>LLM used:</sup> <sup></sup><sup>**Gemini 3.0 Pro**</sup>\
 <sup>time to solve:</sup> <sup></sup><sup>**\~3 hr**</sup>\
 <sup>date:</sup> <sup></sup><sup>**1/16/2026**</sup>
