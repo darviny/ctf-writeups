@@ -63,3 +63,71 @@ With this human + machine hybrid approach, I was doing better but there is still
 
 
 About an hour before the deadline, with some luck (there is one specific emoji my system is blind to) and hand eye coordination. I finally got the flag. GGWP
+
+
+
+
+
+
+
+
+
+
+
+
+
+When you connect to the server via `nc emoji.challs.srdnlen.it 1717` , you are greeted with.
+
+<figure><img src=".gitbook/assets/Screenshot 2026-05-07 at 8.31.54 PM.png" alt=""><figcaption></figcaption></figure>
+
+When you enter 2. the server sends a .PNG file via base64 string. So I wrote a python script to retrieve and save the CAPTCHA file.
+
+```python
+#!/usr/bin/env python3
+
+import argparse
+import base64
+import os
+import re
+from pathlib import Path
+from pwn import context, remote
+
+def _extract_base64_png(text: str):
+    # PNG header: iVBORw0KGgo
+    m = re.search(r"(iVBORw0KGgo[A-Za-z0-9+/=]+)", text)
+    if not m:
+        raise ValueError("No PNG header found")
+    return m.group(1)
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--host", default=os.getenv("HOST", "emoji.challs.srdnlen.it"))
+    parser.add_argument("--port", type=int, default=os.getenv("PORT", "1717"))
+    parser.add_argument("--out", default="sample_captcha.png" )
+    args = parser.parse_args()
+    out_path = Path(args.out).expanduser().resolve()
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+
+    io = remote(args.host, args.port, timeout=args.timeout)
+
+    try:
+        io.recvuntil(b"> ")
+        io.sendline(b"2")
+        data = io.recvuntil(b">>> ").decode(errors="ignore")
+        b64_png = _extract_base64_png(data)
+        png_bytes = base64.b64decode(b64_png)
+        out_path.write_bytes(png_bytes)
+        print(str(out_path))
+
+        return 0
+
+    finally:
+        io.close()
+
+```
+
+
+
+This is what the actual CAPTCHA looks like.
+
+<figure><img src=".gitbook/assets/challenge.png" alt=""><figcaption></figcaption></figure>
