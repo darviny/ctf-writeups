@@ -1,5 +1,6 @@
 ---
 description: voice-in-the-packet, loud-packets, check-the-fine-prints
+hidden: true
 ---
 
 # \[tjctf2026] forensics
