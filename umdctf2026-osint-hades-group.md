@@ -1,5 +1,8 @@
 ---
 description: 'chall author: greyroad__'
+cover: .gitbook/assets/IMG_7677.JPG
+coverY: 0
+coverHeight: 544
 ---
 
 # \[umdctf2026] osint/hades-group
