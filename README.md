@@ -22,6 +22,8 @@ layout:
     visible: true
   tags:
     visible: true
+  actions:
+    visible: true
 tags:
   - steg
 ---
@@ -80,12 +82,6 @@ I am about to grab a pen to transcribe the code manually, but then I remember th
 
 ## Solve Script
 
-A .WAV file usually has the [sampling rate](https://en.wikipedia.org/wiki/Sampling_\(signal_processing\)) of 44100Hz (samples/sec), so a chunk of 10ms would contain 441 samples. Here is an example of a chunk that would correlate to 1 in binaries. A chunk that correlates to 0 in binaries would have same values but negative.&#x20;
-
-<table><thead><tr><th width="206">Samples</th><th>Level</th></tr></thead><tbody><tr><td>1</td><td>0.8</td></tr><tr><td>2</td><td>0.79189396</td></tr><tr><td>3</td><td>0.7677402</td></tr><tr><td>...</td><td>...</td></tr><tr><td>439</td><td>0.7280281</td></tr><tr><td>440</td><td>0.7677402</td></tr><tr><td>441</td><td>0.79189396</td></tr></tbody></table>
-
-In our .WAV file, the peak is always at the first sample of each chunk. So when we have two chunks that correlate to alternate values, for example `10` , then last sample of the first chunk and the first sample of the second chunk would be `0.79189396` and `-0.8` . This discontinuity creates the spikes we see.
-
 ```python
 import librosa
 import numpy as np
@@ -102,6 +98,12 @@ for i in range(0, len(y), samples_per_chunk):
 bin = "".join(bits)
 print(bin)
 ```
+
+A .WAV file usually has the [sampling rate](https://en.wikipedia.org/wiki/Sampling_\(signal_processing\)) of 44100Hz (samples/sec), so a chunk of 10ms would contain 441 samples. Here is an example of a chunk that would correlate to 1 in binaries. A chunk that correlates to 0 in binaries would have same values but negative.&#x20;
+
+<table><thead><tr><th width="206">Samples</th><th>Level</th></tr></thead><tbody><tr><td>1</td><td>0.8</td></tr><tr><td>2</td><td>0.79189396</td></tr><tr><td>3</td><td>0.7677402</td></tr><tr><td>...</td><td>...</td></tr><tr><td>439</td><td>0.7280281</td></tr><tr><td>440</td><td>0.7677402</td></tr><tr><td>441</td><td>0.79189396</td></tr></tbody></table>
+
+In our .WAV file, the peak is always at the first sample of each chunk. So when we have two chunks that correlate to alternate values, for example `10` , then last sample of the first chunk and the first sample of the second chunk would be `0.79189396` and `-0.8` . This discontinuity creates the spikes we see.
 
 With the binaries fresh out of the oven, and a random [binary-to-ASCII decoder](https://www.rapidtables.com/convert/number/binary-to-ascii.html) I found on Google (I recognize it is ASCII because we were just talking about it in CPSC 121), a string that is not complete gibberish shows up.
 
