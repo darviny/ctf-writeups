@@ -131,28 +131,6 @@ But nothing worked.  At this point, we are exhausted. And the final blow that fi
 
 The image is generated with the chunk size of 5000 bytes and rendered as a 6 x 255 image.
 
-```python
-from PIL import Image
-
-with open("data", "rb") as f:
-    num_chunks = 1530
-    width, height = 6, 255 
-
-    pixels = []
-    for i in range(num_chunks):
-        chunk = f.read(7650000 // num_chunks)
-        if not chunk:
-            break
-        non_zeroes = int.from_bytes(chunk, "big").bit_count()
-        total = len(chunk) * 8
-        zeroes = total - non_zeroes
-        pixels.append(int(zeroes / total * 255))
-
-    img = Image.new("L", (width, height))
-    img.putdata(pixels)
-    img.save("output.png")
-```
-
 At that point, we have probably spent more than ten hour on this chall. And to my flag deprived brain, the image looks like a string written in a funky font, yet I just couldn't decipher what the actual characters are written. After starring at it for an embarrassing amount of time, It was getting really late, and we called it a day.
 
 ## Mistakes
