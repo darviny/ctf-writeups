@@ -1,5 +1,29 @@
 ---
 description: by MisterPine
+cover: .gitbook/assets/IMG_7636.JPG
+coverY: 0
+coverHeight: 462
+layout:
+  width: default
+  cover:
+    visible: true
+    size: hero
+  title:
+    visible: true
+  description:
+    visible: true
+  tableOfContents:
+    visible: true
+  outline:
+    visible: true
+  pagination:
+    visible: true
+  metadata:
+    visible: true
+  tags:
+    visible: true
+  actions:
+    visible: true
 ---
 
 # \[GPNCTF 2026] misc/ organized
