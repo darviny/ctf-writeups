@@ -46,13 +46,9 @@ First thing we did was `binwalk -a` . It is quick way to check if there were any
 
 <figure><img src=".gitbook/assets/Screenshot 2026-06-21 at 5.08.59 PM.png" alt=""><figcaption></figcaption></figure>
 
-The result was interesting. It seems binwalk detected multiple GPG signed and Zlib files in the binary file. However some of the file sizes seem unusually small.
+The result was interesting. It seems binwalk detected multiple GPG signed and Zlib files in the binary file. However some of the file sizes seem unusually small. To further investigate, we installed a hex editor called **imHex.**
 
-To further investigate, we installed a hex editor called **imHex**, as recommended by one of the experienced players.
-
-imHex is a powerful tool that allows you to write your own patterns and filters. It was my first time using it, so it took me a while to get used to its Rust and C-style hybrid scripting language.
-
-After a quick tutorial and help from teammates, I started inspecting the memory addresses where the supposed GPG and zlib files were located.
+imHex is a powerful tool that allows you to write your own patterns and filters. It was my first time using it, so it took me a while to get used to its Rust and C-style hybrid scripting language. After a quick tutorial and help from teammates, I started inspecting the memory addresses where the supposed GPG and zlib files were located.
 
 <figure><img src=".gitbook/assets/Screenshot 2026-06-21 at 6.53.02 PM.png" alt=""><figcaption></figcaption></figure>
 
