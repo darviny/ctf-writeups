@@ -2,13 +2,13 @@
 description: by MisterPine
 ---
 
-# \[GPNCTF 2026] misc/organized
+# \[GPNCTF 2026] misc/ organized
 
 For GPNCTF 2026, teams can self designate as **Organic**. These are teams that commit to using AI as least as possible. Our team decided to try this, with more experienced players replacing AI to give guidance and hints to junior members. The reliance of AI has long been a controversial topic.
 
 ## Overview
 
-Knowing that I wouldn't be able to use AI, I picked a chall from the category I am the most familiar with – stenography. The chall comes with a binary file with the following description, and nothing else.
+Knowing that I wouldn't be able to use AI, I picked a chall from the category I am the most familiar with – steganography. The chall comes with a binary file with the following description, and nothing else.
 
 > Isn't this just a file of random data? Well, maybe you just don't appreciate the organization in your life.&#x20;
 >
@@ -93,7 +93,7 @@ And here is the result.
 00010010001011111010
 ```
 
-We tried looking for the flag prefix `gpnctf` in the code, both as ASCII binary (`01000111 01010000 01001110 01000011 01010100 01010101`) and as Base64 (`Z3BuY3Rm`), but we could not find any matching string.&#x20;
+We tried looking for the flag prefix `GPNCTF` in the code, both as ASCII binary (`01000111 01010000 01001110 01000011 01010100 01010101`) and as Base64 (`Z3BuY3Rm`), but we could not find any matching string.&#x20;
 
 In addition, we noted that the length of decoded binaries is not divisable by 8. So we conluded that the flag is probably not directly encoded in the data. (Big mistake!)
 
@@ -143,7 +143,7 @@ At that point, we have probably spent more than ten hour on this chall. And to m
 
 Due to other obligations, we didn't manage to solve the chall before the CTF was over. And then we found out how close we were actually to the flag. Along the way, we made two fatal mistakes.
 
-1. **Not checking bit reversal:** when we were looking for the flag prefix `gpnctf` in the binary code, we didn't check the ASCII binary in reversal (`11100010 00001010 01110010 11000010  00101010 10101010)` . It would have reveal the flag immediately.
+1. **Not checking bit reversal:** when we were looking for the flag prefix `GPNCTF` in the binary code, we didn't check the ASCII binary in reversal (`11100010 00001010 01110010 11000010  00101010 10101010)` . It would have reveal the flag immediately.
 
 <figure><img src=".gitbook/assets/Screenshot 2026-06-22 at 8.39.39 PM.png" alt=""><figcaption></figcaption></figure>
 
@@ -157,4 +157,4 @@ And the parsed output would had made the reversed ASCII bits more obivous.
 
 ## Self Reflection
 
-Looking back at our mistakes, we recognize that one of the shortcomings of relying too heavily on AI: **it is easy to overlook important details, even when the overall idea is on the right track.** AI is usually very good at taking care of the more nuanced parts of pattern matching and execution, while the human's job is steer it in the right direction. But once we took AI away, we became blind to things that were right in front of us, like the flag.
+Looking back at our mistakes, we recognize that one of the shortcomings of relying too heavily on AI: **it is easy to overlook important details, even when the overall idea is on the right track.** AI is usually very good at taking care of the more nuanced parts of pattern matching and execution, while the human's job is steer it in the right direction. But once we took AI away, we became blind to things that were right in front of us the whole time, like the flag.
