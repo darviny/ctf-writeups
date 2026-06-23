@@ -135,7 +135,7 @@ At that point, we have probably spent more than ten hour on this chall. And to m
 
 ## Mistakes
 
-Due to other obligations, we didn't manage to solve the chall before the CTF was over. But we found out how close we were actually to the flag. We realize we made two fatal mistakes.
+Due to other obligations, we didn't manage to solve the chall before the CTF was over. But we found out how close we were actually to the flag. We realize we made two mistakes.
 
 1. **Not checking bit reversal:** when we were looking for the flag prefix `GPNCTF` in the binary code, we didn't check the ASCII binary in reversal (`11100010 00001010 01110010 11000010  00101010 10101010)` . It would have reveal the flag immediately.
 
