@@ -97,8 +97,6 @@ The pattern is now obvious that the chunks could be divided into two types and p
 1. Chunks with \~50 zeroes. **(1 in binaries)**
 2. Chunks with \~5500 zeroes. **(0 in binaries)**
 
-And here is the result.
-
 ```
 00011100011100101000110000111000101000000010101000011100101000110000101000
 00101010100001100010100011011110100000101110100000010010100010000010100001
