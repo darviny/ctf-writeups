@@ -35,8 +35,6 @@ For GPNCTF 2026, teams can self designate as **Organic**. These are teams that c
 Knowing that I wouldn't be able to use AI, I picked a chall from the category I am the most familiar with – steganography. The chall comes with a binary file with the following description, and nothing else.
 
 > Isn't this just a file of random data? Well, maybe you just don't appreciate the organization in your life.&#x20;
->
-> [Download ](https://gpn24.ctf.kitctf.de/api/challenges/handout/organized)
 
 Besides being judged on how I live my life, the text offers not much clues. So we shift our focus to the binary file instead.
 
