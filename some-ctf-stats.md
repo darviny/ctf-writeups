@@ -21,4 +21,4 @@ Diving into more details, we compare the top CTFs sorted by weight. We notice th
 * PlaidCTF -> Defcon
 * GoogleCTF, DownUnderCTF, CryptoCTF, etc canceled.
 
-All of these probalby contribute to the dreadful feeling in the scene right now. There are as many players as before, however most of the CTFs available are "lower weight".
+All of these probalby contribute to the dreadful feeling in the scene right now. There are as many players as before, however most of the CTFs available are "less satisfying".
