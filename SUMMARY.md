@@ -7,3 +7,4 @@
 * [\[tjctf2026\] forensics](tjctf2026-forensics.md)
 * [\[lactf2026\] misc/cat-bomb!](lactf2026-cat-bomb.md)
 * [\[lactf2026\] misc/error-correction](lactf2026-misc-error-correction.md)
+* [Some CTF stats](some-ctf-stats.md)
