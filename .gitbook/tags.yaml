@@ -4,3 +4,6 @@
 - tag: geoguessing
   label: geoguessing
   color: $primary
+- tag: llm
+  label: LLM
+  color: cyan

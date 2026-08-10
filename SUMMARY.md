@@ -1,6 +1,8 @@
 # Table of contents
 
 * [\[1337Challenges 2026\] forensics/maple-signals](README.md)
+* [\[dicectf-quals-2026\] misc/leadgate](readme-1.md)
+* [\[umdctf2026\] misc/flow](readme-2.md)
 * [\[GPNCTF 2026\] misc/ organized](gpnctf-2026-misc-organized.md)
 * [\[umdctf2026\] osint/hades-group](umdctf2026-osint-hades-group.md)
 * [\[srdnlen2026\] misc/emoji-CAPTCHA](srdnlen-2026-emoji-CAPTCHA.md)
