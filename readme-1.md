@@ -171,7 +171,7 @@ And that's how we get the model to spit out the flag.
 
 ### Flag
 
-> dice{}
+> dice{i\_h4te\_th3\_g0lden\_g4te}
 
 ### Takeaway
 
