@@ -24,96 +24,123 @@ tags:
 
 # \[dicectf-quals-2026] misc/leadgate
 
-A group of ppl are in a circle chatting when I enter the room, with a few others sitting at the sides working solo. I don't recognize any of the faces, so I find an empty seat by the corner and pull up the [Maple Bacon 1337 Challenges page](https://maplebacon.org/challenge/).
+This challenge gives us one file: `model.safetensors`. And this mysterious description.
 
-## Maple Bacon
+> An ancient artifact has been discovered! It seems to trace back to an alchemist in Assisi.
 
-It is my first CTF. I know almost nothing about cybersecurity. I scroll through the challenges and pick the OSINT one because it looks the simplest. It is just a photo in .JPG format, can't be that hard right? The goal is to find the location of where the picture was taken and the nearby classrooms. I figure the coordinates would be in the metadata, then I would pop them into Google Maps, and that would be it.
+After googling what Assisi alchemy is, I became even more confused. So let's start with the slightly less confusing part.
 
-Using **Exiftool**, I find nothing useful in the metadata. So are they really expecting us to walk around and physically find it? I beg Aditya, who is right behind me, for a hint. He smirks at me and says "Start walking!". I prefer not to sneak around the campus in the evening, so that is the end of my first attempt to solve a challenge.
+### What Model Is This?
 
-Pushing forward, I pick the second seem-to-be-the-simplest challenge – Forensics. It is just a .WAV file. It even comes with a nice short story in the description. Maybe this time, the metadata would prove to be helpful.&#x20;
+A `.safetensors`  file is basically a JSON header attached to model. There is a handy tool called `stinfo` that helps you inspect the header.
 
-> ## Forensics - maple signals <a href="#forensics---maple-signals" id="forensics---maple-signals"></a>
->
-> **Author:** [Yana](https://maplebacon.org/authors/yana/)
->
-> Hey, I am sending you my new sample. I know you have been waiting for a long time. It is not meant to be listened to like a normal track, but you’ll recognize what to do once you open it. Everything you need is already inside the sound - nothing extra. Handle it the same way we always do.
->
-> Let me know when you get the message ;)
->
-> **Details:**
->
-> * Genre: experimental
-> * Tempo: \~100 BPM
-> * Key: doesn’t really matter, u will see it
->
-> #### Files <a href="#files-3" id="files-3"></a>
->
-> * [`maple-signals.wav`](https://maplebacon.org/assets/1337-2026/forensics/maple-signals.wav)
-
-And I am wrong again. There don't seem to be any hints in the metadata. Not knowing what else to do, I ask Gemini for help. "Download [**Sonic Visualiser**](https://www.sonicvisualiser.org/), that's what the pros use," it answers. I am not a pro, but I will use it. Opening the .WAV file, I am greeted with a solid blue bar. Oh, I am zoomed out too far. As I zoom in, the solid bar starts to turn into a waveform. Cool, but I still have no idea what I am looking at. Playing around with the menus, it seems beside waveform, there are also different [spectrogram](https://en.wikipedia.org/wiki/Spectrogram) layers. After cycling through all of them, zooming in and out, I am still clueless about where the flag is. I guess I am not a pro after all.
-
-<div><figure><img src=".gitbook/assets/Screenshot 2026-05-05 at 3.38.01 PM.png" alt=""><figcaption><p>The solid blue bar</p></figcaption></figure> <figure><img src=".gitbook/assets/Screenshot 2026-05-05 at 3.29.06 PM.png" alt=""><figcaption><p>After zooming in</p></figcaption></figure> <figure><img src=".gitbook/assets/Screenshot 2026-05-05 at 3.34.00 PM.png" alt=""><figcaption><p>Spectrogram</p></figcaption></figure></div>
-
-The next suggestion Gemini gives me is [Slow Scan Television (SSTV)](https://en.wikipedia.org/wiki/Slow-scan_television). Maybe the flag is an image hidden in the spectrogram. Except when I compare the sound of our [.WAV file](https://maplebacon.org/assets/1337-2026/forensics/maple-signals.wav) to a SSTV sample on [YouTube](https://www.youtube.com/watch?v=EJbFg4sjINo), they sound nothing alike. Another dead end.
-
-Perhaps sensing the hopelessness, Yana comes over to check on me. After seeing that I am stuck, she suggests trying another challenge. It might be easier. I tell her I want to give this one more hour. She looks at me and says "It is all about perspective," and leaves.
-
-Then Zhou, who sits at the other corner of the room, rolls his chair over and asks "Wanna work together?" We show each other what we have gotten so far. When I show him one of the spectrograms, he says "That looks like a bar code." We try scanning it with a bar code scanner. Unfortunately, it doesn't work. It would be really cool if it does.
-
-<figure><img src=".gitbook/assets/Screenshot 2026-03-04 at 6.19.24 PM.png" alt=""><figcaption><p>The "Bar Code"</p></figcaption></figure>
-
-Part not willing to admit defeat, part trying to impress each other, we find ourselves staring at the challenge description, then a small detail starts catching our attention: **100 BPM**.&#x20;
-
-It seems weirdly specific to include that in a block of text that is mostly for flavor. "Does that mean 100ms?" I ask Zhou. "**10ms**," he replies. (As it turns out, we were both wrong lol. 100 BPM is 1 beat every 600ms. We were thinking 100Hz which is 1 cycle per 10ms.) Then Zhou has to go. Before he leaves, he shows me a Python library called `librosa`. He has been using it to read the .WAV file in his Python script.
-
-Switching back to Sonic Visualiser, I continue playing with the different "perspectives". Then suddenly, I see it. In the **Waveform** layer, with the timescale sets to **10ms**, the waveform is not continuous anymore. There are distinct spikes, some upward, some downward, hidden at constant intervals, sort of like Morse code.
-
-<figure><img src=".gitbook/assets/Screenshot 2026-03-04 at 6.19.06 PM (1).png" alt=""><figcaption><p>The "perspective" showing the spikes.</p></figcaption></figure>
-
-I am about to grab a pen to transcribe the code manually, but then I remember the Python library Zhou just showed me. With a bit of help from Gemini to understand the API, I now have a Python script that reads the .WAV file in 10ms chunks and prints 0 or 1 depending on the _spike_ direction. (It is not really a spike, see explanation below)
-
-## Solve Script
-
-```python
-import librosa
-import numpy as np
-
-y, sr = librosa.load("maple-signals.wav", sr=None)
-samples_per_chunk = int(sr * 0.01) # 44100 samples/sec * 10ms = 441 samples
-bits = []
-
-for i in range(0, len(y), samples_per_chunk):
-    chunk = y[i : i + samples_per_chunk]
-    peak = chunk[np.argmax(np.abs(chunk))]
-    bits.append("1" if peak > 0 else "0")
-
-bin = "".join(bits)
-print(bin)
+```bash
+stinfo -l model.safetensors
 ```
 
-A .WAV file usually has the [sampling rate](https://en.wikipedia.org/wiki/Sampling_\(signal_processing\)) of 44100Hz (samples/sec), so a chunk of 10ms would contain 441 samples. Here is an example of a chunk that would correlate to 1 in binaries. A chunk that correlates to 0 in binaries would have same values but negative.&#x20;
+I copied the metadata into ChatGPT, and it told me it is **GPT-2 small** (124M params, 12 layers, 768 dimensions). Then I manually verified it with Google because blindly trusting an LLM while reverse engineering an LLM feels slightly too recursive, even for me.  Now that we know what model it is, let's try running it.
 
-<table><thead><tr><th width="206">Samples</th><th>Level</th></tr></thead><tbody><tr><td>1</td><td>0.8</td></tr><tr><td>2</td><td>0.79189396</td></tr><tr><td>3</td><td>0.7677402</td></tr><tr><td>...</td><td>...</td></tr><tr><td>439</td><td>0.7280281</td></tr><tr><td>440</td><td>0.7677402</td></tr><tr><td>441</td><td>0.79189396</td></tr></tbody></table>
+### Ollama
 
-In our .WAV file, the peak is always at the first sample of each chunk. So when we have two chunks that correlate to alternate values, for example `10` , then last sample of the first chunk and the first sample of the second chunk would be `0.79189396` and `-0.8` . This discontinuity creates the spikes we see.
+I first tried using **Ollama**. It usually runs models in  `.gguf`  format but you could also run custom models through a `Modelfile`.
 
-With the binaries fresh out of the oven, and a random [binary-to-ASCII decoder](https://www.rapidtables.com/convert/number/binary-to-ascii.html) I found on Google (I recognize it is ASCII because we were just talking about it in CPSC 121), a string that is not complete gibberish shows up.
+```bash
+echo "FROM ." > Modelfile
+ollama create ctfmodel -f Modelfile
+```
 
-At this point, I am still not sure exactly what a flag looks like, so I message Zhou. He explains that the flag should be in `maple{...}` format. And that's how I got my first flag.
+This is supposed to make Ollama uses the current directory to create a model. Except it turns out GPT-2 is not supported.
 
-p.s. Also thank you to Lyndon who showed me how to actually submit it to maple-chan.
+### Loading GPT-2 Correctly
 
-## Flag
+With the `transformers`  and `safetensors` libraries, I wrote a script to to load the model.&#x20;
 
-> ### **`maple{M4ple_bY__fr<3nd}`**
+<pre class="language-python"><code class="lang-python">from transformers import GPT2Config, GPT2LMHeadModel, GPT2Tokenizer
+from safetensors.torch import load_file
 
-## Takeaway
+tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
+config = GPT2Config(
+    vocab_size=50257,
+    n_positions=1024,
+    n_embd=768,
+    n_layer=12,
+    n_head=12,
+    tie_word_embeddings=True
+)
+model = GPT2LMHeadModel(config)
+weights = load_file("model.safetensors")
 
-* Submit your flags to @Maple-chan in Discord, e.g. `/submit maple{test}`.&#x20;
-* The complexity of a chall's setup doesn't correlate to its difficulty. A chall with a single .JPG file could also be the most difficult one.
-* Work with others, especially when you are stuck. I never found out if the 100 BPM -> 100 Hz leap of logic was intentional, or whether it was just luck. But it did help us solve the chall.
+if "lm_head.weight" not in weights: 
+    weights["lm_head.weight"] = weights["transformer.wte.weight"]
+    
+<strong>model.load_state_dict(weights) 
+</strong>model.eval()
+</code></pre>
+
+One issue I faced is that the model is missing a tensor named `lm_head.weight`  which GPT-2 uses at the output layer. It turns out this is normal. GPT-2 uses the same matrix both to represent input tokens and the output layer. We just have to set `lm_head.weight` as the same weight as `transformer.wte.weight` from the input.
+
+Everything loaded. So I entered my first prompt.
+
+```
+An ancient artifact has been discovered! It seems to trace back to an alchemist in Assisi.
+```
+
+And the model responds.
+
+```
+The discovery was made by a team of researchers from the University  College London, who have found that this type is not only used for  medicinal purposes...
+```
+
+I tried asking the model with other prompts like,
+
+* `dice{` 
+* `The flag is` 
+* `The flag is dice{` 
+
+Nothing useful turned up as well. I guess this challenge requires more work than simply asking the model nicely. Perhaps, there are some hints in the weights.
+
+### Steg again?
+
+The first thing I did was finding the stock **GPT-2 Small** model and compare it with ours.
+
+```python
+from safetensors.torch import load_file
+from transformers import GPT2LMHeadModel
+import torch
+
+# Load the CTF weights
+ctf_weights = load_file("model.safetensors")
+
+# Load stock GPT-2 for comparison
+stock_model = GPT2LMHeadModel.from_pretrained("gpt2")
+stock_weights = stock_model.state_dict()
+
+# Find which layers differ
+for key in ctf_weights:
+    if key in stock_weights:
+        if ctf_weights[key].shape != stock_weights[key].shape:
+            print(f"SHAPE MISMATCH: {key} {tuple(ctf_weights[key].shape)} vs {tuple(stock_weights[key].shape)}")
+            continue
+        diff = (ctf_weights[key] - stock_weights[key]).abs()
+        max_diff = diff.max().item()
+        nonzero = (diff > 1e-6).sum().item()
+        if nonzero > 0:
+            print(f"{key}: {nonzero} changed values, max_diff={max_diff:.6f}")
+    else:
+        print(f"EXTRA KEY (not in stock): {key}")
+```
+
+Examining the output, it seems nearly every tensor in the model has been modified slightly. The largest delta is `0.003` and most are much smaller. The first thing that popped in my mind was steganography (Partly due to the reason that I have just finished another steganography challenge the week before). Maybe the author took a stock GPT-2 model and embedded the flag into tiny chages in the weights. That would explain why the model's behaviour seems to be unchanged.
+
+I tried finding patterns in the deltas. ASCII, hex, base64. Nothing showed up.
+
+After an embarassing amount of time. I gave up on this approach.
+
+
+
+asdfsdasdfsadf
+
+asdfasdfsadf
 
 {% tabs %}
 {% tab title="Details" %}
