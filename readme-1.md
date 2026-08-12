@@ -32,7 +32,7 @@ After googling what Assisi alchemy is, I became even more confused. So let's sta
 
 ### What Model Is This?
 
-A `.safetensors`  file stores model tensors together with a JSON header descrbing their names, shapes, data types(dtypes), and byte offsets, followed by the raw tensor data. There is a handy tool called `stinfo` that helps you inspect the header.
+A `.safetensors`  file stores model tensors together with a JSON header describing their names, shapes, data types(dtypes), and byte offsets, followed by the raw tensor data. There is a handy tool called `stinfo` that helps you inspect the header.
 
 ```bash
 stinfo -l model.safetensors
