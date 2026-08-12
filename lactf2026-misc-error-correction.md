@@ -51,11 +51,11 @@ So our job is to unshuffle the chunks and reconstruct the QR code like a jigsaw 
 2. Find the most obvious chunks – **Finders**, **Alignment** and **Timing**.
 
 * **Finders** are the chunks with the big squares. (3 chunks)\
-  &#xNAN;_&#x50;osition: top left, top right and bottom left._
+  _&#x50;osition: top left, top right and bottom left._
 * **Alignment** are the chunks with smaller squares. (6 chunks)\
-  &#xNAN;_&#x50;osition: center, top, left, right, bottom and bottom right._
+  _&#x50;osition: center, top, left, right, bottom and bottom right._
 * **Timing** are the chunks with dotting lines. (4 chunks)\
-  &#xNAN;_&#x54;wo vertical and two horizontal chunks._ The right horizontal and bottom vertical chunks have an **Version Information** pattern.
+  _&#x54;wo vertical and two horizontal chunks._ The right horizontal and bottom vertical chunks have an **Version Information** pattern.
 
 <figure><img src=".gitbook/assets/chall_topright_chunk-mh.png" alt=""><figcaption><p>Notice the Timing pattern below the Version Information pattern.</p></figcaption></figure>
 

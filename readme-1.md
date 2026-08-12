@@ -32,11 +32,116 @@ After googling what Assisi alchemy is, I became even more confused. So let's sta
 
 ### What Model Is This?
 
-A `.safetensors`  file is basically a JSON header attached to model. There is a handy tool called `stinfo` that helps you inspect the header.
+A `.safetensors`  file stores model tensors together with a JSON header descrbing their names, shapes, data types(dtypes), and byte offsets, followed by the raw tensor data. There is a handy tool called `stinfo` that helps you inspect the header.
 
 ```bash
 stinfo -l model.safetensors
+
+Tensor Name                              Dtype      Shape                Size           
+------------------------------------------------------------------------------------------
+transformer.h.0.attn.c_attn.bias         F32        [2304]               9.00 KB        
+transformer.h.0.attn.c_attn.weight       F32        [768,2304]           6.75 MB        
+transformer.h.0.attn.c_proj.bias         F32        [768]                3.00 KB        
+transformer.h.0.attn.c_proj.weight       F32        [768,768]            2.25 MB        
+transformer.h.0.ln_1.bias                F32        [768]                3.00 KB        
+transformer.h.0.ln_1.weight              F32        [768]                3.00 KB        
+transformer.h.0.ln_2.bias                F32        [768]                3.00 KB        
+transformer.h.0.ln_2.weight              F32        [768]                3.00 KB        
+transformer.h.0.mlp.c_fc.bias            F32        [3072]               12.00 KB       
+transformer.h.0.mlp.c_fc.weight          F32        [768,3072]           9.00 MB        
+transformer.h.0.mlp.c_proj.bias          F32        [768]                3.00 KB        
+transformer.h.0.mlp.c_proj.weight        F32        [3072,768]           9.00 MB        
+...        
+transformer.h.11.attn.c_attn.bias        F32        [2304]               9.00 KB        
+transformer.h.11.attn.c_attn.weight      F32        [768,2304]           6.75 MB        
+transformer.h.11.attn.c_proj.bias        F32        [768]                3.00 KB        
+transformer.h.11.attn.c_proj.weight      F32        [768,768]            2.25 MB        
+transformer.h.11.ln_1.bias               F32        [768]                3.00 KB        
+transformer.h.11.ln_1.weight             F32        [768]                3.00 KB        
+transformer.h.11.ln_2.bias               F32        [768]                3.00 KB        
+transformer.h.11.ln_2.weight             F32        [768]                3.00 KB        
+transformer.h.11.mlp.c_fc.bias           F32        [3072]               12.00 KB       
+transformer.h.11.mlp.c_fc.weight         F32        [768,3072]           9.00 MB        
+transformer.h.11.mlp.c_proj.bias         F32        [768]                3.00 KB        
+transformer.h.11.mlp.c_proj.weight       F32        [3072,768]           9.00 MB              
+transformer.ln_f.bias                    F32        [768]                3.00 KB        
+transformer.ln_f.weight                  F32        [768]                3.00 KB        
+transformer.wpe.weight                   F32        [1024,768]           3.00 MB        
+transformer.wte.weight                   F32        [50257,768]          147.24 MB      
 ```
+
+Reading from the bottom,
+
+```bash
+transformer.wte.weight                   F32        [50257,768]          147.24 MB   
+```
+
+`wte` means **word token embedding.** This tensor has `50257` tokens in its vocabulary, meaning the content itself, and each token is represented by a vector of `768` values.
+
+```bash
+transformer.wpe.weight                   F32        [1024,768]           3.00 MB 
+```
+
+`wpe` means **word position embedding**. This tensor has `1024` token positions, meaning the position in a sentence, and each position is represented by a vector of `768` values.
+
+And then the transformer adds `wte` and `wpe` together to get the input token. As we can see from the tensor names, there are 12 transformer blocks `h.0-h.11.` When the input enters block 1, it first enters **Layer Normalization** 1 or `ln_1`.&#x20;
+
+```bash
+transformer.h.0.ln_1.bias                F32        [768]                3.00 KB        
+transformer.h.0.ln_1.weight              F32        [768]                3.00 KB  
+```
+
+`ln_1` standardize the token with this (simplified) formula.
+
+```matlab
+input x weight + bias = output
+```
+
+And then the transformer **calculates the** **attention (c\_attn)** of that token.
+
+```bash
+transformer.h.0.attn.c_attn.bias         F32        [2304]               9.00 KB        
+transformer.h.0.attn.c_attn.weight       F32        [768,2304]           6.75 MB 
+```
+
+**Attention** is how GPT decides which earlier tokens are relevant to the current token. To do this, it needs Q (Query), K (Key), and V (Value) of each vector of each token. That's why `c_attn.weight` has the shape of `[768,2304]`. _( 768 x 3 = 2304 )_ `c_attn.bias` is `[2304]`.
+
+```bash
+transformer.h.0.attn.c_proj.bias         F32        [768]                3.00 KB        
+transformer.h.0.attn.c_proj.weight       F32        [768,768]            2.25 MB 
+```
+
+After we have the attention results, we need to **calculate the projection (c\_proj)**. Again, we need to do it for QKV for each vector of each token. This finishes the Attention part of the transformer.
+
+```bash
+transformer.h.0.ln_2.bias                F32        [768]                3.00 KB        
+transformer.h.0.ln_2.weight              F32        [768]                3.00 KB  
+```
+
+Before we enter the next part, we need to normalize the vectors again.
+
+Now we enter:
+
+```bash
+transformer.h.0.mlp.c_fc.bias            F32        [3072]               12.00 KB       
+transformer.h.0.mlp.c_fc.weight          F32        [768,3072]           9.00 MB 
+```
+
+`mlp` stands for **Multi-Layer Perceptron** and `c_fc` stands for **fully connected (layer)**. It is a linear algebra transformation that expands a matrix. In this case from `768` to `3072` , increasing its size four times.
+
+```bash
+transformer.h.0.mlp.c_proj.bias          F32        [768]                3.00 KB        
+transformer.h.0.mlp.c_proj.weight        F32        [3072,768]           9.00 MB   
+```
+
+And `mpl.c_proj` compresses the size bak to `768` . And then we enter next block `h.1` and repeat the same process.&#x20;
+
+```bash
+transformer.ln_f.bias                    F32        [768]                3.00 KB        
+transformer.ln_f.weight                  F32        [768]                3.00 KB  
+```
+
+Until we hit final block `h.11` , and do the final normalizing before using the result to predict the next token.
 
 I copied the metadata into ChatGPT, and it told me it is **GPT-2 small** (124M params, 12 layers, 768 dimensions). Then I manually verified it with Google because blindly trusting an LLM while reverse engineering an LLM feels slightly too recursive, even for me.  Now that we know what model it is, let's try running it.
 
