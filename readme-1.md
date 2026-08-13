@@ -24,6 +24,8 @@ tags:
 
 # \[dicectf-quals-2026] misc/leadgate
 
+## <mark style="color:$danger;"><<<< Work in Progress >>>></mark>
+
 This challenge gives us one file: `model.safetensors`. And this mysterious description.
 
 > An ancient artifact has been discovered! It seems to trace back to an alchemist in Assisi.
