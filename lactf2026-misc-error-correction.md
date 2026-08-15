@@ -1,5 +1,6 @@
 ---
 description: by pstorm
+hidden: true
 ---
 
 # \[lactf2026] misc/error-correction
