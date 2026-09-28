@@ -1,6 +1,7 @@
 # Table of contents
 
-* [\[1337Challenges 2026\] forensics/maple-signals](README.md)
+* [\[ Seedling 2026 \] Melon is missing](README.md)
+* [\[1337Challenges 2026\] forensics/maple-signals](<README (1).md>)
 * [\[dicectf-quals-2026\] misc/leadgate](readme-1.md)
 * [\[srdnlen2026\] misc/emoji-CAPTCHA](srdnlen-2026-emoji-CAPTCHA.md)
 * [\[umdctf2026\] misc/flow](readme-2.md)
