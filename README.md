@@ -1,3 +1,7 @@
+---
+hidden: true
+---
+
 # \[ Seedling 2026 ] Melon is missing
 
 * first live CTF. definitely different vibe than an online event.
